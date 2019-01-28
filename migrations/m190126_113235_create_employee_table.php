@@ -33,8 +33,8 @@ class m190126_113235_create_employee_table extends Migration
             'is_employee' => $this->tinyInteger(1)->notNull()->defaultValue(0),
             'create_user_id' => $this->integer()->notNull(),
             'update_user_id' => $this->integer()->notNull(),
-            'create_time' => $this->timestamp()->defaultValue(new Expression('CURRENT_TIMESTAMP')),
-            'update_time' => $this->timestamp()->defaultValue(new Expression('CURRENT_TIMESTAMP'))
+            'create_time' => $this->dateTime()->notNull(),
+            'update_time' => $this->dateTime()->notNull()
         ]);
 
         // creates index for column `create_user_id`

@@ -19,7 +19,7 @@ class m190125_204020_create_user_table extends Migration
             'surname' => $this->string(),
             'name' => $this->string(),
             'hash' => $this->char(40)->notNull(),
-            'create_time' => $this->timestamp()->defaultValue(new Expression('CURRENT_TIMESTAMP'))
+            'create_time' => $this->dateTime()->notNull()
         ]);
     }
 
