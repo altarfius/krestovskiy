@@ -1,5 +1,9 @@
 <?php
 
+use kartik\icons\Icon;
+
 return [
-    'adminEmail' => 'admin@example.com',
+    'adminEmail' => 'altarfius@gmail.com',
+    'bsVersion' => '4.x',
+    'icon-framework' => Icon::FAS,
 ];

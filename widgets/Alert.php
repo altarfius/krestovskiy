@@ -1,7 +1,9 @@
 <?php
 namespace app\widgets;
 
+use kartik\icons\Icon;
 use Yii;
+use kartik\growl\Growl;
 
 /**
  * Alert widget renders a message from session flash. All flash messages are displayed
@@ -37,6 +39,15 @@ class Alert extends \yii\bootstrap\Widget
         'info'    => 'alert-info',
         'warning' => 'alert-warning'
     ];
+
+    public $alertNames = [
+        'error'   => 'Ошибка!',
+        'danger'  => 'Внимание!',
+        'success' => 'Успешно!',
+        'info'    => 'Информация',
+        'warning' => 'Предупреждение'
+    ];
+
     /**
      * @var array the options for rendering the close button tag.
      * Array will be passed to [[\yii\bootstrap\Alert::closeButton]].
@@ -59,13 +70,12 @@ class Alert extends \yii\bootstrap\Widget
             }
 
             foreach ((array) $flash as $i => $message) {
-                echo \yii\bootstrap\Alert::widget([
+                echo Growl::widget([
+                    'type' => $type,
+                    'title' => $this->alertNames[$type],
+                    'showSeparator' => true,
+//                    'icon' => Icon::show('check-circle'),
                     'body' => $message,
-                    'closeButton' => $this->closeButton,
-                    'options' => array_merge($this->options, [
-                        'id' => $this->getId() . '-' . $type . '-' . $i,
-                        'class' => $this->alertTypes[$type] . $appendClass,
-                    ]),
                 ]);
             }
 

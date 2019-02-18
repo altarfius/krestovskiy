@@ -2,6 +2,8 @@
 
 namespace app\controllers;
 
+use app\models\Category;
+use app\models\CategoryType;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -19,7 +21,7 @@ class SiteController extends Controller
     {
         return [
             'access' => [
-                'class' => AccessControl::className(),
+                'class' => AccessControl::class,
                 'only' => ['logout'],
                 'rules' => [
                     [
@@ -30,7 +32,7 @@ class SiteController extends Controller
                 ],
             ],
             'verbs' => [
-                'class' => VerbFilter::className(),
+                'class' => VerbFilter::class,
                 'actions' => [
                     'logout' => ['post'],
                 ],
@@ -61,7 +63,11 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+
+        return $this->render('index', [
+            'categoryTypes' => CategoryType::find()->all(),
+            'category' => Category::findOne(1)
+        ]);
     }
 
     /**

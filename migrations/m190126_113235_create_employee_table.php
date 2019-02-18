@@ -20,7 +20,7 @@ class m190126_113235_create_employee_table extends Migration
             'patronymic' => $this->string(),
             'gender' => $this->tinyInteger(1),
             'age' => $this->decimal(2),
-            'phone' => $this->decimal(11),
+            'phone' => $this->string(18),
             'call_type' => $this->tinyInteger(1),
             'interview_date' => $this->date(),
             'type' => $this->tinyInteger(1),
@@ -28,6 +28,7 @@ class m190126_113235_create_employee_table extends Migration
             'manager_id' => $this->integer()->notNull(),
             'source_id' => $this->integer()->notNull(),
             'metro_id' => $this->integer()->notNull(),
+            'status_id' => $this->integer()->notNull(),
             'is_candidate' => $this->tinyInteger(1)->notNull()->defaultValue(1),
             'is_trainee' => $this->tinyInteger(1)->notNull()->defaultValue(0),
             'is_employee' => $this->tinyInteger(1)->notNull()->defaultValue(0),
@@ -139,6 +140,23 @@ class m190126_113235_create_employee_table extends Migration
             'id',
             'CASCADE'
         );
+
+        // creates index for column `status_id`
+        $this->createIndex(
+            'idx-employee-status_id',
+            'employee',
+            'status_id'
+        );
+
+        // add foreign key for table `status`
+        $this->addForeignKey(
+            'fk-employee-status_id',
+            'employee',
+            'status_id',
+            'status',
+            'id',
+            'CASCADE'
+        );
     }
 
     /**
@@ -215,6 +233,18 @@ class m190126_113235_create_employee_table extends Migration
         // drops index for column `metro_id`
         $this->dropIndex(
             'idx-employee-metro_id',
+            'employee'
+        );
+
+        // drops foreign key for table `status`
+        $this->dropForeignKey(
+            'fk-employee-status_id',
+            'employee'
+        );
+
+        // drops index for column `status_id`
+        $this->dropIndex(
+            'idx-employee-status_id',
             'employee'
         );
 

@@ -4,76 +4,94 @@
 /* @var $content string */
 
 use app\widgets\Alert;
-use yii\helpers\Html;
-use yii\bootstrap\Nav;
-use yii\bootstrap\NavBar;
-use yii\widgets\Breadcrumbs;
+use kartik\helpers\Html;
+use kartik\icons\Icon;
+use kartik\nav\NavX;
+use yii\bootstrap4\Breadcrumbs;
+use yii\bootstrap4\Nav;
+use yii\bootstrap4\NavBar;
 use app\assets\AppAsset;
 
 AppAsset::register($this);
-?>
-<?php $this->beginPage() ?>
-<!DOCTYPE html>
-<html lang="<?= Yii::$app->language ?>">
-<head>
-    <meta charset="<?= Yii::$app->charset ?>">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <?= Html::csrfMetaTags() ?>
-    <title><?= Html::encode($this->title) ?></title>
-    <?php $this->head() ?>
-</head>
-<body>
-<?php $this->beginBody() ?>
+Icon::map($this);
 
-<div class="wrap">
-    <?php
-    NavBar::begin([
-        'brandLabel' => Yii::$app->name,
-        'brandUrl' => Yii::$app->homeUrl,
-        'options' => [
-            'class' => 'navbar-inverse navbar-fixed-top',
-        ],
-    ]);
-    echo Nav::widget([
-        'options' => ['class' => 'navbar-nav navbar-right'],
-        'items' => [
-            ['label' => 'Home', 'url' => ['/site/index']],
-            ['label' => 'About', 'url' => ['/site/about']],
-            ['label' => 'Contact', 'url' => ['/site/contact']],
-            Yii::$app->user->isGuest ? (
-                ['label' => 'Login', 'url' => ['/site/login']]
-            ) : (
-                '<li>'
-                . Html::beginForm(['/site/logout'], 'post')
-                . Html::submitButton(
-                    'Logout (' . Yii::$app->user->identity->username . ')',
-                    ['class' => 'btn btn-link logout']
-                )
-                . Html::endForm()
-                . '</li>'
-            )
-        ],
-    ]);
-    NavBar::end();
+$this->registerMetaTag(['charset' => Yii::$app->charset]);
+$this->registerMetaTag(['http-equiv' => 'X-UA-Compatible', 'content' => 'IE=edge']);
+$this->registerMetaTag(['name' => 'viewport', 'content' => 'width=device-width, initial-scale=1']);
+$this->registerCsrfMetaTags();
+
+$this->beginPage();
+
+echo '<!DOCTYPE html>';
+echo Html::beginTag('html', ['lang' => Yii::$app->language]);
+
+echo Html::beginTag('head');
+    echo Html::tag('title', Html::encode($this->title));
+
+    $this->head();
+echo Html::endTag('head');
+
+
+echo Html::beginTag('body');
+    $this->beginBody();
+
+    echo Html::beginTag('div', ['class' => 'wrap']);
+
+        NavBar::begin([
+            'brandLabel' => Yii::$app->name,
+            'brandUrl' => Yii::$app->homeUrl,
+            'options' => [
+                'class' => 'navbar-expand-xl fixed-top navbar-dark bg-primary',
+            ],
+            'renderInnerContainer' => false,
+        ]);
+        echo NavX::widget([
+            'options' => ['class' => 'navbar-nav mx-auto'],
+            'items' => [
+                ['label' => 'Персонал', 'items' => [
+                    ['label' => 'Кандидаты', 'url' => ['/candidate/show']],
+                    ['label' => 'Стажёры', 'url' => ['/trainee/show']],
+                    ['label' => 'Сотрудники', 'url' => ['/employee/show'], 'linkOptions' => ['class' => 'disabled']],
+                ]],
+                ['label' => 'Рестораны', 'url' => ['/site/about'], 'linkOptions' => ['class' => 'disabled']],
+                ['label' => 'Планирование', 'url' => ['/site/contact'], 'linkOptions' => ['class' => 'disabled']],
+                ['label' => 'Финансы', 'url' => ['/site/about'], 'linkOptions' => ['class' => 'disabled']],
+                ['label' => 'Отчётность', 'url' => ['/site/contact'], 'linkOptions' => ['class' => 'disabled']],
+//                Yii::$app->user->isGuest ? (
+//                    ['label' => 'Login', 'url' => ['/site/login']]
+//                ) : (
+//                    '<li>'
+//                    . Html::beginForm(['/site/logout'], 'post')
+//                    . Html::submitButton(
+//                        'Logout (' . Yii::$app->user->identity->username . ')',
+//                        ['class' => 'btn btn-link logout']
+//                    )
+//                    . Html::endForm()
+//                    . '</li>'
+//                )
+            ],
+        ]);
+        NavBar::end();
+
+        echo Html::beginTag('div', ['class' => 'container-fluid']);
+            Alert::widget();
+
+            echo Html::beginTag('div', ['class' => 'row mt-2']);
+                echo Html::beginTag('div', ['class' => 'col-12']);
+
+                    echo Breadcrumbs::widget([
+                        'homeLink' => false,
+                        'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+                    ]);
+
+                echo Html::endTag('div');
+            echo Html::endTag('div');
+
+            echo $content;
+        echo Html::endTag('div');
+
+    echo Html::endTag('div');
     ?>
-
-    <div class="container">
-        <?= Breadcrumbs::widget([
-            'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-        ]) ?>
-        <?= Alert::widget() ?>
-        <?= $content ?>
-    </div>
-</div>
-
-<footer class="footer">
-    <div class="container">
-        <p class="pull-left">&copy; My Company <?= date('Y') ?></p>
-
-        <p class="pull-right"><?= Yii::powered() ?></p>
-    </div>
-</footer>
 
 <?php $this->endBody() ?>
 </body>

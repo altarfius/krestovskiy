@@ -10,8 +10,8 @@ body {
     padding: 0 0 60px;
 }
 
-.wrap > .container {
-    padding: 70px 15px 20px;
+.wrap > .container-fluid {
+    padding: 56px 15px 20px;
 }
 
 .footer {
@@ -112,4 +112,11 @@ a.desc:after {
 
 .nav > li > form > button.logout:focus {
     outline: none;
+}
+
+button:active, button:focus {
+    outline: none;
+}
+button::-moz-focus-inner {
+    border: 0;
 }
