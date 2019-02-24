@@ -33,5 +33,5 @@ modules:
 #            - runtime/*
 #            - vendor/*
 #            - views/*
-#            - web/*
+#            - public_html/*
 #            - tests/*
