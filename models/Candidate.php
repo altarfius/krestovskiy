@@ -32,14 +32,14 @@ class Candidate extends ActiveRecord
             'status.name' => 'Статус',
             'status' => 'Статус',
             'division' => 'Ресторан',
-            'division_id' => 'Ресторан',
+            'nationality' => 'Гражданство',
         ];
     }
 
     public function rules()
     {
         return [
-            [['surname', 'name', 'patronymic', 'gender', 'age', 'phone', 'category', 'source', 'metro', 'call_type', 'type', 'status', 'division'], 'required'],
+            [['surname', 'name', 'patronymic', 'gender', 'age', 'phone', 'category', 'source', 'metro', 'call_type', 'type', 'status', 'division', 'nationality'], 'required'],
             [['surname', 'name', 'patronymic', 'age'], 'trim'],
             ['age', 'integer', 'min' => 18, 'max' => 65],
             ['interview_date', 'date'],
@@ -159,6 +159,16 @@ class Candidate extends ActiveRecord
     public function getDivision()
     {
         return $this->hasOne(Division::class, ['id' => 'division_id']);
+    }
+
+    public function setNationality($nationality)
+    {
+        $this->nationality_id = $nationality instanceof Nationality ? $nationality->id : $nationality;
+    }
+
+    public function getNationality()
+    {
+        return $this->hasOne(Nationality::class, ['id' => 'nationality_id']);
     }
 
     public function getGenderFullText() {
