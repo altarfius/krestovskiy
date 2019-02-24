@@ -31,13 +31,15 @@ class Candidate extends ActiveRecord
             'category.name' => 'Вакансия',
             'status.name' => 'Статус',
             'status' => 'Статус',
+            'division' => 'Ресторан',
+            'division_id' => 'Ресторан',
         ];
     }
 
     public function rules()
     {
         return [
-            [['surname', 'name', 'patronymic', 'gender', 'age', 'phone', 'category', 'source', 'metro', 'call_type', 'type', 'status'], 'required'],
+            [['surname', 'name', 'patronymic', 'gender', 'age', 'phone', 'category', 'source', 'metro', 'call_type', 'type', 'status', 'division'], 'required'],
             [['surname', 'name', 'patronymic', 'age'], 'trim'],
             ['age', 'integer', 'min' => 18, 'max' => 65],
             ['interview_date', 'date'],
@@ -147,6 +149,16 @@ class Candidate extends ActiveRecord
     public function getUpdateUser()
     {
         return $this->hasOne(User::class, ['id' => 'update_user_id']);
+    }
+
+    public function setDivision($division)
+    {
+        $this->division_id = $division instanceof Division ? $division->id : $division;
+    }
+
+    public function getDivision()
+    {
+        return $this->hasOne(Division::class, ['id' => 'division_id']);
     }
 
     public function getGenderFullText() {
