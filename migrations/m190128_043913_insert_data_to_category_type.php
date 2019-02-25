@@ -16,8 +16,12 @@ class m190128_043913_insert_data_to_category_type extends Migration
             'name'
         ], [
             ['Кухня'],
-            ['Зал'],
-            ['Подсобка']
+            ['Понтон'],
+            ['Сервис'],
+            ['Офис'],
+            ['Отдел закупок'],
+            ['Подсобный рабочий'],
+            ['Технический отдел']
         ]);
     }
 
@@ -26,8 +30,6 @@ class m190128_043913_insert_data_to_category_type extends Migration
      */
     public function safeDown()
     {
-        echo "m190128_043913_insert_data_to_category_type cannot be reverted.\n";
-
         return true;
     }
 }
