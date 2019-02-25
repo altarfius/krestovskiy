@@ -20,17 +20,26 @@ class CandidateSearch extends Candidate
     {
         // только поля определенные в rules() будут доступны для поиска
         return [
-//            [['id'], 'integer'],
             [['date_from', 'date_to'], 'date'],
         ];
     }
 
     public function search($params)
     {
-        $query = Candidate::find();
+        $query = Candidate::find()->joinWith(['category', 'division']);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort' => [
+                'attributes' => [
+                    'interview_date',
+                    'category.name',
+                    'division.name',
+                ],
+                'defaultOrder' => [
+                    'interview_date' => SORT_ASC,
+                ],
+            ],
         ]);
 
         // загружаем данные формы поиска и производим валидацию

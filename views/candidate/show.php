@@ -84,6 +84,10 @@ echo Html::beginTag('div', ['class' => 'row']);
                     'vAlign' => GridView::ALIGN_MIDDLE,
                 ],
                 [
+                    'attribute' => 'division.name',
+                    'vAlign' => GridView::ALIGN_MIDDLE,
+                ],
+                [
                     'attribute' => 'interview_date',
                     'format' => ['date', 'dd MMMM'],
                     'vAlign' => GridView::ALIGN_MIDDLE,

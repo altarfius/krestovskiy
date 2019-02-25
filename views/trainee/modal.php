@@ -18,12 +18,16 @@ Modal::begin([
         'focus' => true,
         'backdrop' => 'static',
     ],
+    'options' => [
+        'tabindex' => false,
+    ],
     'closeButton' => false,
     'footer' => join('', [
         Html::resetButton('Закрыть', [
             'type' => 'button',
             'form' => 'w1',
             'class' => 'btn btn-secondary',
+            'onclick' => new \yii\web\JsExpression('$("#w0").modal("hide")'),
         ]),
         Html::submitButton('Сохранить', [
             'type' => 'button',

@@ -249,5 +249,7 @@ class m190126_113235_create_employee_table extends Migration
         );
 
         $this->dropTable('employee');
+
+        return true;
     }
 }
