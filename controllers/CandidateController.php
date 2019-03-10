@@ -5,6 +5,7 @@ use app\models\CandidateSearch;
 use app\models\Status;
 use app\models\Trainee;
 use yii\data\ActiveDataProvider;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use app\models\Candidate;
 use app\models\Category;
@@ -14,6 +15,28 @@ use Yii;
 
 class CandidateController extends Controller
 {
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::class,
+//                'only' => ['show', 'logout', 'signup'],
+                'rules' => [
+                    [
+                        'allow' => true,
+//                        'actions' => ['login', 'signup'],
+                        'roles' => ['@'],
+                    ],
+//                    [
+//                        'allow' => true,
+//                        'actions' => ['logout'],
+//                        'roles' => ['@'],
+//                    ],
+                ],
+            ],
+        ];
+    }
+
     public function actionIndex()
     {
         return $this->actionShow();
@@ -31,11 +54,15 @@ class CandidateController extends Controller
         ]);
     }
 
-    public function actionEdit()
+    public function actionEdit($id = null)
     {
-        $candidate = new Candidate();
+        $candidate = Candidate::findOne($id);
+        if ($candidate == null) {
+            $candidate = new Candidate();
+        }
 
-        if ($candidate->load(\Yii::$app->request->post()) && $candidate->save()) {
+        if ($candidate->load(Yii::$app->request->post()) && $candidate->save()) {
+            Yii::$app->session->setFlash('success', 'Кандидат сохранён');
             return $this->redirect(Yii::$app->request->referrer);
         }
 

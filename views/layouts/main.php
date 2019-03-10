@@ -19,6 +19,12 @@ $this->registerMetaTag(['charset' => Yii::$app->charset]);
 $this->registerMetaTag(['http-equiv' => 'X-UA-Compatible', 'content' => 'IE=edge']);
 $this->registerMetaTag(['name' => 'viewport', 'content' => 'width=device-width, initial-scale=1']);
 $this->registerCsrfMetaTags();
+$this->registerJs('$(document).keydown(function(event){
+    if (event.keyCode == 32 && (event.ctrlKey)) {
+        event.preventDefault();
+        $("#new-candidate-modal").modal("show");
+    }
+});', $this::POS_END);
 
 $this->beginPage();
 
@@ -57,20 +63,15 @@ echo Html::beginTag('body');
                 ['label' => 'Планирование', 'url' => ['/site/contact'], 'linkOptions' => ['class' => 'disabled']],
                 ['label' => 'Финансы', 'url' => ['/site/about'], 'linkOptions' => ['class' => 'disabled']],
                 ['label' => 'Отчётность', 'url' => ['/site/contact'], 'linkOptions' => ['class' => 'disabled']],
-//                Yii::$app->user->isGuest ? (
-//                    ['label' => 'Login', 'url' => ['/site/login']]
-//                ) : (
-//                    '<li>'
-//                    . Html::beginForm(['/site/logout'], 'post')
-//                    . Html::submitButton(
-//                        'Logout (' . Yii::$app->user->identity->username . ')',
-//                        ['class' => 'btn btn-link logout']
-//                    )
-//                    . Html::endForm()
-//                    . '</li>'
-//                )
             ],
         ]);
+
+        if (Yii::$app->user->isGuest) {
+            echo Html::a('Войти', ['user/login'], ['class' => 'text-white']);
+        } else {
+            echo Html::tag('div', Yii::$app->user->identity->fullname . ' | ' . Html::a('Выйти', ['user/logout'], ['class' => 'text-white']), ['class' => 'text-white']);
+        }
+
         NavBar::end();
 
         echo Html::beginTag('div', ['class' => 'container-fluid']);
@@ -87,7 +88,10 @@ echo Html::beginTag('body');
                 echo Html::endTag('div');
             echo Html::endTag('div');
 
+            echo $this->render('/candidate/modal');
+
             echo $content;
+
         echo Html::endTag('div');
 
     echo Html::endTag('div');
@@ -97,3 +101,6 @@ echo Html::beginTag('body');
 </body>
 </html>
 <?php $this->endPage() ?>
+
+<?php
+

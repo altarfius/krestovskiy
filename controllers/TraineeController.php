@@ -2,14 +2,34 @@
 
 namespace app\controllers;
 
+use app\models\Category;
+use app\models\Division;
 use app\models\Status;
 use app\models\Trainee;
+use app\models\TraineeSearch;
 use yii\data\ActiveDataProvider;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use Yii;
+use yii\web\HttpException;
 
 class TraineeController extends Controller
 {
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
+        ];
+    }
+
     public function actionIndex()
     {
         return $this->actionShow();
@@ -17,17 +37,24 @@ class TraineeController extends Controller
 
     public function actionShow()
     {
+        $traineeSearch = new TraineeSearch();
+        $traineeProvider = $traineeSearch->search(Yii::$app->request->get());
+
         return $this->render('show', [
-            'traineeProvider' => new ActiveDataProvider([
-                'query' => Trainee::find(),
-            ]),
-            'statuses' => Status::find()->all(),
+            'traineeProvider' => $traineeProvider,
+            'traineeSearch' => $traineeSearch,
+            'divisions' => Division::find()->all(),
+            'categories' => Category::find()->all(),
+            'statuses' => Status::find()->byStage(Trainee::STAGE_ID)->all(),
         ]);
     }
 
     public function actionEdit($id)
     {
         $trainee = Trainee::findOne($id);
+        if ($trainee == null) {
+            throw new HttpException(400,'Стажёра с таким id не существует');
+        }
 
         if ($trainee->load(Yii::$app->request->post())) {
             Yii::debug($trainee->attributes, __METHOD__);
@@ -40,11 +67,14 @@ class TraineeController extends Controller
         }
 
         return $this->render('show', [
+            'traineeSearch' => new TraineeSearch(),
             'traineeProvider' => new ActiveDataProvider([
                 'query' => Trainee::find(),
             ]),
             'newTrainee' => Trainee::findOne($id),
-            'statuses' => Status::find()->all(),
+            'divisions' => Division::find()->all(),
+            'categories' => Category::find()->all(),
+            'statuses' => Status::find()->byStage(Trainee::STAGE_ID)->all(),
         ]);
     }
 
