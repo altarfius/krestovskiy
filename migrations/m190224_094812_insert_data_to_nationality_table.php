@@ -12,7 +12,7 @@ class m190224_094812_insert_data_to_nationality_table extends Migration
      */
     public function safeUp()
     {
-        $this->batchInsert('nationality', [
+        $this->batchInsert('{{%nationality}}', [
             'name'
         ], [
             ['РФ'],

@@ -12,9 +12,10 @@ class m190126_110329_create_metro_table extends Migration
      */
     public function safeUp()
     {
-        $this->createTable('metro', [
+        $this->createTable('{{%metro}}', [
             'id' => $this->primaryKey(),
             'name' => $this->string(),
+            'line' => $this->integer(),
             'active' => $this->tinyInteger(1)->notNull()->defaultValue(1),
         ]);
     }
@@ -24,6 +25,6 @@ class m190126_110329_create_metro_table extends Migration
      */
     public function safeDown()
     {
-        $this->dropTable('metro');
+        $this->dropTable('{{%metro}}');
     }
 }

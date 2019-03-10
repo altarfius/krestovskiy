@@ -12,11 +12,11 @@ class m190127_063524_insert_user_admin extends Migration
      */
     public function safeUp()
     {
-        $this->insert('user', [
+        $this->insert('{{%user}}', [
             'login' => 'admin',
             'surname' => 'Натовский',
             'name' => 'Дмитрий',
-            'hash' => '1ecd5abcec35d73c5919e3c286e8116d49e3374f',
+            'hash' => '$2y$13$CY6J2KNanmsw2l0qE6V8YeyXmHErlS.wZw1RmeFbPtr4lUrMwen7a',
             'create_time' => DateTime::createFromFormat('U', '1548648501')->format('Y-m-d H:i:s'),
         ]);
     }
@@ -26,23 +26,8 @@ class m190127_063524_insert_user_admin extends Migration
      */
     public function safeDown()
     {
-        $this->delete('user', [
+        $this->delete('{{%user}}', [
            'login' => 'admin'
         ]);
     }
-
-    /*
-    // Use up()/down() to run migration code without a transaction.
-    public function up()
-    {
-
-    }
-
-    public function down()
-    {
-        echo "m190127_063524_insert_user_admin cannot be reverted.\n";
-
-        return false;
-    }
-    */
 }

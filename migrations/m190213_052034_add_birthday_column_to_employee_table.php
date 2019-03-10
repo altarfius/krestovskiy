@@ -12,7 +12,7 @@ class m190213_052034_add_birthday_column_to_employee_table extends Migration
      */
     public function safeUp()
     {
-        $this->addColumn('employee', 'birthday', $this->date());
+        $this->addColumn('{{%employee}}', 'birthday', $this->date());
     }
 
     /**
@@ -20,6 +20,6 @@ class m190213_052034_add_birthday_column_to_employee_table extends Migration
      */
     public function safeDown()
     {
-        $this->dropColumn('employee', 'birthday');
+        $this->dropColumn('{{%employee}}', 'birthday');
     }
 }

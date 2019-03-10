@@ -12,7 +12,7 @@ class m190126_105334_create_source_table extends Migration
      */
     public function safeUp()
     {
-        $this->createTable('source', [
+        $this->createTable('{{%source}}', [
             'id' => $this->primaryKey(),
             'name' => $this->string(),
             'active' => $this->tinyInteger(1)->notNull()->defaultValue(1),
@@ -24,6 +24,6 @@ class m190126_105334_create_source_table extends Migration
      */
     public function safeDown()
     {
-        $this->dropTable('source');
+        $this->dropTable('{{%source}}');
     }
 }

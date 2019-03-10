@@ -12,7 +12,7 @@ class m190128_043913_insert_data_to_category_type extends Migration
      */
     public function safeUp()
     {
-        $this->batchInsert('category_type', [
+        $this->batchInsert('{{%category_type}}', [
             'name'
         ], [
             ['Кухня'],

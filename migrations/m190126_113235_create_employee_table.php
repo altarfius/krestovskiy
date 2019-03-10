@@ -13,7 +13,7 @@ class m190126_113235_create_employee_table extends Migration
      */
     public function safeUp()
     {
-        $this->createTable('employee', [
+        $this->createTable('{{%employee}}', [
             'id' => $this->primaryKey(),
             'surname' => $this->string(),
             'name' => $this->string(),
@@ -41,16 +41,16 @@ class m190126_113235_create_employee_table extends Migration
         // creates index for column `create_user_id`
         $this->createIndex(
             'idx-employee-create_user_id',
-            'employee',
+            '{{%employee}}',
             'create_user_id'
         );
 
         // add foreign key for table `user`
         $this->addForeignKey(
             'fk-employee-create_user_id',
-            'employee',
+            '{{%employee}}',
             'create_user_id',
-            'user',
+            '{{%user}}',
             'id',
             'CASCADE'
         );
@@ -58,16 +58,16 @@ class m190126_113235_create_employee_table extends Migration
         // creates index for column `update_user_id`
         $this->createIndex(
             'idx-employee-update_user_id',
-            'employee',
+            '{{%employee}}',
             'update_user_id'
         );
 
         // add foreign key for table `user`
         $this->addForeignKey(
             'fk-employee-update_user_id',
-            'employee',
+            '{{%employee}}',
             'update_user_id',
-            'user',
+            '{{%user}}',
             'id',
             'CASCADE'
         );
@@ -75,16 +75,16 @@ class m190126_113235_create_employee_table extends Migration
         // creates index for column `category_id`
         $this->createIndex(
             'idx-employee-category_id',
-            'employee',
+            '{{%employee}}',
             'category_id'
         );
 
         // add foreign key for table `category`
         $this->addForeignKey(
             'fk-employee-category_id',
-            'employee',
+            '{{%employee}}',
             'category_id',
-            'category',
+            '{{%category}}',
             'id',
             'CASCADE'
         );
@@ -92,16 +92,16 @@ class m190126_113235_create_employee_table extends Migration
         // creates index for column `manager_id`
         $this->createIndex(
             'idx-employee-manager_id',
-            'employee',
+            '{{%employee}}',
             'manager_id'
         );
 
         // add foreign key for table `user`
         $this->addForeignKey(
             'fk-employee-manager_id',
-            'employee',
+            '{{%employee}}',
             'manager_id',
-            'user',
+            '{{%user}}',
             'id',
             'CASCADE'
         );
@@ -109,16 +109,16 @@ class m190126_113235_create_employee_table extends Migration
         // creates index for column `source_id`
         $this->createIndex(
             'idx-employee-source_id',
-            'employee',
+            '{{%employee}}',
             'source_id'
         );
 
         // add foreign key for table `source`
         $this->addForeignKey(
             'fk-employee-source_id',
-            'employee',
+            '{{%employee}}',
             'source_id',
-            'source',
+            '{{%source}}',
             'id',
             'CASCADE'
         );
@@ -127,16 +127,16 @@ class m190126_113235_create_employee_table extends Migration
         // creates index for column `metro_id`
         $this->createIndex(
             'idx-employee-metro_id',
-            'employee',
+            '{{%employee}}',
             'metro_id'
         );
 
         // add foreign key for table `metro`
         $this->addForeignKey(
             'fk-employee-metro_id',
-            'employee',
+            '{{%employee}}',
             'metro_id',
-            'metro',
+            '{{%metro}}',
             'id',
             'CASCADE'
         );
@@ -144,16 +144,16 @@ class m190126_113235_create_employee_table extends Migration
         // creates index for column `status_id`
         $this->createIndex(
             'idx-employee-status_id',
-            'employee',
+            '{{%employee}}',
             'status_id'
         );
 
         // add foreign key for table `status`
         $this->addForeignKey(
             'fk-employee-status_id',
-            'employee',
+            '{{%employee}}',
             'status_id',
-            'status',
+            '{{%status}}',
             'id',
             'CASCADE'
         );
@@ -167,88 +167,88 @@ class m190126_113235_create_employee_table extends Migration
         // drops foreign key for table `user`
         $this->dropForeignKey(
             'fk-employee-create_user_id',
-            'employee'
+            '{{%employee}}'
         );
 
         // drops index for column `create_user_id`
         $this->dropIndex(
             'idx-employee-create_user_id',
-            'employee'
+            '{{%employee}}'
         );
 
         // drops foreign key for table `user`
         $this->dropForeignKey(
             'fk-employee-update_user_id',
-            'employee'
+            '{{%employee}}'
         );
 
         // drops index for column `update_user_id`
         $this->dropIndex(
             'idx-employee-update_user_id',
-            'employee'
+            '{{%employee}}'
         );
 
         // drops foreign key for table `category`
         $this->dropForeignKey(
             'fk-employee-category_id',
-            'employee'
+            '{{%employee}}'
         );
 
         // drops index for column `category_id`
         $this->dropIndex(
             'idx-employee-category_id',
-            'employee'
+            '{{%employee}}'
         );
 
         // drops foreign key for table `user`
         $this->dropForeignKey(
             'fk-employee-manager_id',
-            'employee'
+            '{{%employee}}'
         );
 
         // drops index for column `manager_id`
         $this->dropIndex(
             'idx-employee-manager_id',
-            'employee'
+            '{{%employee}}'
         );
 
         // drops foreign key for table `source`
         $this->dropForeignKey(
             'fk-employee-source_id',
-            'employee'
+            '{{%employee}}'
         );
 
         // drops index for column `source_id`
         $this->dropIndex(
             'idx-employee-source_id',
-            'employee'
+            '{{%employee}}'
         );
 
         // drops foreign key for table `metro`
         $this->dropForeignKey(
             'fk-employee-metro_id',
-            'employee'
+            '{{%employee}}'
         );
 
         // drops index for column `metro_id`
         $this->dropIndex(
             'idx-employee-metro_id',
-            'employee'
+            '{{%employee}}'
         );
 
         // drops foreign key for table `status`
         $this->dropForeignKey(
             'fk-employee-status_id',
-            'employee'
+            '{{%employee}}'
         );
 
         // drops index for column `status_id`
         $this->dropIndex(
             'idx-employee-status_id',
-            'employee'
+            '{{%employee}}'
         );
 
-        $this->dropTable('employee');
+        $this->dropTable('{{%employee}}');
 
         return true;
     }

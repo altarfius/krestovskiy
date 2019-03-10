@@ -13,12 +13,12 @@ class m190125_204020_create_user_table extends Migration
      */
     public function safeUp()
     {
-        $this->createTable('user', [
+        $this->createTable('{{%user}}', [
             'id' => $this->primaryKey(),
             'login' => $this->string()->notNull(),
             'surname' => $this->string(),
             'name' => $this->string(),
-            'hash' => $this->char(40)->notNull(),
+            'hash' => $this->char(60)->notNull(),
             'create_time' => $this->dateTime()->notNull()
         ]);
     }
@@ -28,6 +28,6 @@ class m190125_204020_create_user_table extends Migration
      */
     public function safeDown()
     {
-        $this->dropTable('user');
+        $this->dropTable('{{%user}}');
     }
 }

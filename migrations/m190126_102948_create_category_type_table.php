@@ -12,7 +12,7 @@ class m190126_102948_create_category_type_table extends Migration
      */
     public function safeUp()
     {
-        $this->createTable('category_type', [
+        $this->createTable('{{%category_type}}', [
             'id' => $this->primaryKey(),
             'name' => $this->string(),
             'active' => $this->tinyInteger(1)->notNull()->defaultValue(1),
@@ -24,6 +24,6 @@ class m190126_102948_create_category_type_table extends Migration
      */
     public function safeDown()
     {
-        $this->dropTable('category_type');
+        $this->dropTable('{{%category_type}}');
     }
 }

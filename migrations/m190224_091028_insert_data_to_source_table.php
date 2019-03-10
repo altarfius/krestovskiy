@@ -12,7 +12,7 @@ class m190224_091028_insert_data_to_source_table extends Migration
      */
     public function safeUp()
     {
-        $this->batchInsert('source', [
+        $this->batchInsert('{{%source}}', [
             'name'
         ], [
             ['Hh'],

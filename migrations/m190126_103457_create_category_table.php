@@ -15,7 +15,7 @@ class m190126_103457_create_category_table extends Migration
      */
     public function safeUp()
     {
-        $this->createTable('category', [
+        $this->createTable('{{%category}}', [
             'id' => $this->primaryKey(),
             'name' => $this->string(),
             'category_type_id' => $this->integer()->notNull(),
@@ -25,16 +25,16 @@ class m190126_103457_create_category_table extends Migration
         // creates index for column `category_type_id`
         $this->createIndex(
             'idx-category-category_type_id',
-            'category',
+            '{{%category}}',
             'category_type_id'
         );
 
         // add foreign key for table `category_type`
         $this->addForeignKey(
             'fk-category-category_type_id',
-            'category',
+            '{{%category}}',
             'category_type_id',
-            'category_type',
+            '{{%category_type}}',
             'id',
             'CASCADE'
         );
@@ -48,15 +48,15 @@ class m190126_103457_create_category_table extends Migration
         // drops foreign key for table `category_type`
         $this->dropForeignKey(
             'fk-category-category_type_id',
-            'category'
+            '{{%category}}'
         );
 
         // drops index for column `category_type_id`
         $this->dropIndex(
             'idx-category-category_type_id',
-            'category'
+            '{{%category}}'
         );
 
-        $this->dropTable('category');
+        $this->dropTable('{{%category}}');
     }
 }
