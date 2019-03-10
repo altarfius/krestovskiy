@@ -4,6 +4,7 @@ use kartik\grid\GridView;
 use kartik\grid\SerialColumn;
 use kartik\helpers\Html;
 use kartik\bs4dropdown\ButtonDropdown;
+use kartik\icons\Icon;
 
 $this->title = 'Кандидаты';
 
@@ -14,7 +15,12 @@ echo Html::beginTag('div', ['class' => 'row']);
 
     echo Html::beginTag('div', ['class' => 'col-3']);
         echo Html::beginTag('div', ['class' => 'row']);
-            echo $this->render('modal');
+//            echo $this->render('modal');
+            echo Html::button(Icon::show('plus') . ' Новый кандидат', [
+                'class' => 'btn btn-primary mt-2 ml-3',
+                'data-toggle' => 'modal',
+                'data-target' => '#new-candidate-modal',
+            ]);
         echo Html::endTag('div');
     echo Html::endTag('div');
 
@@ -41,7 +47,7 @@ echo Html::beginTag('div', ['class' => 'row']);
             ],
             'dataProvider'=> $candidateProvider,
             'rowOptions' => function($model) {
-                return $model->is_trainee ? ['class' => 'text-secondary'] : null;
+                return ['class' => $model->styleByStatus];
             },
             'columns' => [
                 [
@@ -53,15 +59,7 @@ echo Html::beginTag('div', ['class' => 'row']);
                     'vAlign' => GridView::ALIGN_MIDDLE,
                 ],
                 [
-                    'attribute' => 'surname',
-                    'vAlign' => GridView::ALIGN_MIDDLE,
-                ],
-                [
-                    'attribute' => 'name',
-                    'vAlign' => GridView::ALIGN_MIDDLE,
-                ],
-                [
-                    'attribute' => 'patronymic',
+                    'attribute' => 'fullname',
                     'vAlign' => GridView::ALIGN_MIDDLE,
                 ],
                 [
@@ -88,24 +86,25 @@ echo Html::beginTag('div', ['class' => 'row']);
                     'vAlign' => GridView::ALIGN_MIDDLE,
                 ],
                 [
-                    'attribute' => 'interview_date',
-                    'format' => ['date', 'dd MMMM'],
-                    'vAlign' => GridView::ALIGN_MIDDLE,
-                ],
-                [
                     'attribute' => 'status.name',
                     'format' => 'raw',
+                    'vAlign' => GridView::ALIGN_MIDDLE,
                     'content' => function($model) use ($statuses) {
                         return ButtonDropdown::widget([
                             'label' => $model->status->name,
                             'buttonOptions' => [
-                                'class' => 'btn-success btn-sm ' . ($model->is_trainee ? 'disabled' : ''),
+                                'class' => 'btn-'. $model->status->style .' btn-sm ' . ($model->is_trainee || $model->is_employee ? 'disabled' : ''),
                             ],
                             'dropdown' => [
                                 'items' => $model->renderDropdownItems(),
                             ],
                         ]);
                     },
+                ],
+                [
+                    'attribute' => 'interview_date',
+                    'format' => ['date', 'dd MMMM'],
+                    'vAlign' => GridView::ALIGN_MIDDLE,
                 ],
             ],
         ]);

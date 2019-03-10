@@ -13,6 +13,9 @@ use yii\db\ActiveQuery;
 
 class Status extends ActiveRecord
 {
+    const INVITED = 7;
+    const STAGED = 13;
+
     public static function find()
     {
         return new StatusQuery(get_called_class());

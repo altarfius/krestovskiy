@@ -1,9 +1,11 @@
 <?php
 
+use app\models\Status;
 use kartik\grid\GridView;
 use kartik\grid\SerialColumn;
 use kartik\helpers\Html;
 use kartik\bs4dropdown\ButtonDropdown;
+use yii\helpers\ArrayHelper;
 
 $this->title = 'Стажёры';
 
@@ -44,48 +46,95 @@ echo Html::beginTag('div', ['class' => 'row']);
             'containerOptions' => [
                 'class' => 'mt-2'
             ],
+//            'headerRowOptions' => ['class' => 'kartik-sheet-style'],
+//            'filterRowOptions' => ['class' => 'kartik-sheet-style'],
             'dataProvider'=> $traineeProvider,
+            'filterModel' => $traineeSearch,
+            'rowOptions' => function($model) {
+                return ['class' => $model->styleByStatus];
+            },
             'columns' => [
                 [
                     'class' => SerialColumn::class,
-                    'contentOptions' => ['class' => 'kartik-sheet-style'],
                     'width' => '36px',
                     'header' => '#',
-                    'headerOptions' => ['class' => 'kartik-sheet-style'],
-                    'vAlign' => GridView::ALIGN_MIDDLE,
+//                    'vAlign' => GridView::ALIGN_MIDDLE,
                 ],
                 [
-                    'attribute' => 'surname',
-                    'vAlign' => GridView::ALIGN_MIDDLE,
-                ],
-                [
-                    'attribute' => 'name',
-                    'vAlign' => GridView::ALIGN_MIDDLE,
-                ],
-                [
-                    'attribute' => 'patronymic',
-                    'vAlign' => GridView::ALIGN_MIDDLE,
+                    'attribute' => 'fullname',
+//                    'vAlign' => GridView::ALIGN_MIDDLE,
+                    'mergeHeader' => true,
+                    'format' => 'raw',
+                    'value' => function($model) {
+                        return $this->render('modalEdit', [
+                            'trainee' => $model,
+                        ]);
+                    },
                 ],
                 [
                     'attribute' => 'phone',
-                    'vAlign' => GridView::ALIGN_MIDDLE,
+//                    'vAlign' => GridView::ALIGN_MIDDLE,
+                    'mergeHeader' => true,
+                    'width' => '130px',
                 ],
                 [
-                    'attribute' => 'category.name',
+                    'attribute' => 'division',
+                    'value' => 'division.name',
+                    'width' => '160px',
                     'vAlign' => GridView::ALIGN_MIDDLE,
+                    'filterType' => GridView::FILTER_SELECT2,
+                    'filter' => ArrayHelper::map($divisions, 'id', 'name'),
+                    'filterWidgetOptions' => [
+                        'pluginOptions' => ['allowClear' => true],
+                    ],
+                    'filterInputOptions' => ['placeholder' => 'Фильтровать по...'],
                 ],
                 [
-                    'attribute' => 'status.name',
+                    'attribute' => 'category',
+                    'value' => 'category.name',
+                    'vAlign' => GridView::ALIGN_MIDDLE,
+                    'width' => '320px',
+                    'filterType' => GridView::FILTER_SELECT2,
+                    'filter' => ArrayHelper::map($categories, 'id', 'name'),
+                    'filterWidgetOptions' => [
+                        'pluginOptions' => ['allowClear' => true],
+                    ],
+                    'filterInputOptions' => ['placeholder' => 'Фильтровать по...'],
+                ],
+                [
+                    'attribute' => 'status',
+                    'value' => 'status.name',
                     'format' => 'raw',
+                    'width' => '210px',
+                    'vAlign' => GridView::ALIGN_MIDDLE,
                     'content' => function($model) use ($statuses) {
                         return ButtonDropdown::widget([
                             'label' => $model->status->name,
-                            'buttonOptions' => ['class' => 'btn-success btn-sm'],
+                            'buttonOptions' => ['class' => 'btn-success btn-sm ' . ($model->is_employee ? 'disabled' : '')],
                             'dropdown' => [
                                 'items' => $model->renderDropdownItems(),
                             ],
                         ]);
                     },
+                    'filterType' => GridView::FILTER_SELECT2,
+                    'filter' => ArrayHelper::map($statuses, 'id', 'name'),
+                    'filterWidgetOptions' => [
+                        'pluginOptions' => ['allowClear' => true],
+                    ],
+                    'filterInputOptions' => ['placeholder' => 'Фильтровать по...'],
+                ],
+                [
+                    'attribute' => 'trainee_date',
+                    'format' => ['date', 'dd MMMM'],
+                    'vAlign' => GridView::ALIGN_MIDDLE,
+                    'width' => '170px',
+                    'filterType' => GridView::FILTER_DATE,
+                    'filter' => ArrayHelper::map($statuses, 'id', 'name'),
+                    'filterWidgetOptions' => [
+                        'pluginOptions' => [
+                            'autoclose' => true,
+                        ],
+                    ],
                 ]
             ],
         ]);

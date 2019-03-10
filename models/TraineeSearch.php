@@ -7,15 +7,16 @@ use yii\data\ActiveDataProvider;
 
 class TraineeSearch extends Trainee
 {
-    public $date_from;
-    public $date_to;
+    public $division;
+    public $category;
+    public $status;
 
     public function rules()
     {
         // только поля определенные в rules() будут доступны для поиска
         return [
-//            [['id'], 'integer'],
-            [['date_from', 'date_to'], 'date'],
+            [['trainee_date'], 'date'],
+            [['division', 'category', 'status'], 'safe']
         ];
     }
 
@@ -33,11 +34,10 @@ class TraineeSearch extends Trainee
         }
 
         // изменяем запрос добавляя в его фильтрацию
-//        $query->andFilterWhere(['id' => $this->id]);
-//        $query->andFilterWhere(['like', 'title', $this->title])
-//            ->andFilterWhere(['like', 'creation_date', $this->creation_date]);
-        $query->andFilterWhere(['>=', 'interview_date', Yii::$app->formatter->asDate($this->date_from, 'yyyy-MM-dd')]);
-        $query->andFilterWhere(['<=', 'interview_date', Yii::$app->formatter->asDate($this->date_to, 'yyyy-MM-dd')]);
+        $query->andFilterWhere(['division_id' => $this->division]);
+        $query->andFilterWhere(['category_id' => $this->category]);
+        $query->andFilterWhere(['status_id' => $this->status]);
+        $query->andFilterWhere(['trainee_date' => $this->trainee_date ? Yii::$app->formatter->asDate($this->trainee_date, 'yyyy-MM-dd') : $this->trainee_date]);
 
         return $dataProvider;
     }

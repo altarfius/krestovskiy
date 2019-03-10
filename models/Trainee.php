@@ -30,6 +30,9 @@ class Trainee extends Candidate
             'passport_issued' => 'Кем выдан',
             'passport_number' => 'Серия и номер',
             'photoFile' => 'Фото',
+            'medical' => 'ЛМК',
+            'medical_date' => 'Действительна до',
+            'trainee_date' => 'Дата начала стажировки'
         ]);
     }
 
@@ -37,10 +40,10 @@ class Trainee extends Candidate
     {
         return array_merge(parent::rules(), [
             ['passport_type', 'default', 'value' => self::RUSSIAN_PASSPORT],
-            [['passport_type', 'passport_date', 'passport_issued', 'passport_number'], 'required'],
+            [['passport_type', 'passport_date', 'passport_issued', 'passport_number', 'medical', 'medical_date', 'trainee_date'], 'required'],
             [['passport_number', 'passport_issued'], 'trim'],
-            ['passport_date', 'date'],
-            ['photo', 'image'],
+            [['passport_date', 'medical_date', 'trainee_date'], 'date'],
+//            ['photo', 'image'],
             [['birthday'], 'safe'],
         ]);
     }
@@ -54,13 +57,30 @@ class Trainee extends Candidate
         if ($this->status->next_stage < Trainee::STAGE_ID) {
             $this->is_candidate = 1;
             $this->is_trainee = 0;
+            $this->is_employee = 0;
+        } elseif ($this->status->next_stage < 5) {
+            $this->is_candidate = 0;
+            $this->is_trainee = 1;
+            $this->is_employee = 0;
+        } else {
+            $this->is_candidate = 0;
+            $this->is_trainee = 0;
+            $this->is_employee = 1;
         }
 
-
-        $this->photo = UploadedFile::getInstance($this, 'photo');
-        $this->photo->saveAs(Yii::getAlias('@webroot/img/' . $this->photo->name . '.' . $this->photo->extension));
+//        $this->photo = UploadedFile::getInstance($this, 'photo');
+//        if ($this->photo != null) {
+//            $this->photo->saveAs(Yii::getAlias('@webroot/img/' . $this->photo->name . '.' . $this->photo->extension));
+//
+//        }
 
         $this->passport_date = Yii::$app->formatter->asDate($this->passport_date, 'yyyy-MM-dd');
+        $this->medical_date = Yii::$app->formatter->asDate($this->medical_date, 'yyyy-MM-dd');
+        $this->trainee_date = Yii::$app->formatter->asDate($this->trainee_date, 'yyyy-MM-dd');
+
+        if ($this->status_id == Status::INVITED) {
+            $this->status_id = Status::STAGED;
+        }
 
         return true;
     }
@@ -70,6 +90,10 @@ class Trainee extends Candidate
         parent::afterSave($insert, $changedAttributes);
 
         $this->passport_date = Yii::$app->formatter->asDate($this->passport_date);
+        $this->medical_date = Yii::$app->formatter->asDate($this->medical_date);
+        $this->trainee_date = Yii::$app->formatter->asDate($this->trainee_date);
+
+
 
         Yii::$app->session->setFlash('success', 'Стажёр сохранён');
     }
@@ -85,6 +109,8 @@ class Trainee extends Candidate
         parent::afterFind();
 
         $this->passport_date = Yii::$app->formatter->asDate($this->passport_date);
+        $this->medical_date = Yii::$app->formatter->asDate($this->medical_date);
+        $this->trainee_date = Yii::$app->formatter->asDate($this->trainee_date);
     }
 
     public function isRussian()

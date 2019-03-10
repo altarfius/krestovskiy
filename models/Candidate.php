@@ -34,6 +34,7 @@ class Candidate extends ActiveRecord
             'division' => 'Ресторан',
             'division.name' => 'Ресторан',
             'nationality' => 'Гражданство',
+            'fullname' => 'Ф.И.О.'
         ];
     }
 
@@ -50,7 +51,7 @@ class Candidate extends ActiveRecord
     public static function find()
     {
         $query = new CandidateQuery(get_called_class());
-        return $query;
+        return $query->isCandidate();
     }
 
     public function beforeSave($insert)
@@ -87,7 +88,7 @@ class Candidate extends ActiveRecord
 
         $this->interview_date = \Yii::$app->formatter->asDate($this->interview_date);
 
-        Yii::$app->session->setFlash('success', 'Кандидат сохранён');
+//        Yii::$app->session->setFlash('success', 'Кандидат сохранён');
     }
 
     public function afterFind()
@@ -176,6 +177,14 @@ class Candidate extends ActiveRecord
         return $this->gender ? 'Женский' : 'Мужской';
     }
 
+    public function getStyleByStatus($type = 'table') {
+        return $type . '-' . $this->status->style;
+    }
+
+    public function getFullname() {
+        return trim($this->surname . ' ' . $this->name . ' ' . $this->patronymic);
+    }
+
     public function renderDropdownItems() {
         return array_map(function($status) {
             return [
@@ -183,6 +192,7 @@ class Candidate extends ActiveRecord
                 'url' => ['candidate/updatestatus', 'id' => $this->id, 'statusId' => $status->id],
 //                'url' => '#',
 //                'linkOptions' => [
+//                    'class' => 'text-' . $status->style,
 //                    'onclick' => new JsExpression('jQuery.get(
 //                        "' . Url::to(['candidate/updatestatus', 'id' => $this->id, 'statusId' => $status->id]) . '",
 //                        {},
