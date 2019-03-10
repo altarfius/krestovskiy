@@ -20,24 +20,25 @@ class RbacController extends Controller
 //        $updatePost->description = 'Update post';
 //        $auth->add($updatePost);
 
-        // добавляем роль "author" и даём роли разрешение "createPost"
-//        $admin = $auth->createRole('admin');
-//        $auth->add($admin);
+        $admin = $auth->createRole('admin');
+        $supervisor = $auth->createRole('supervisor');
+        $manager = $auth->createRole('manager');
 
-//        $supervisor = $auth->createRole('supervisor');
-//        $auth->add($supervisor);
+        $auth->add($admin);
+        $auth->add($supervisor);
+        $auth->add($manager);
 
-//        $auth->addChild($admin, $supervisor);
+        $auth->addChild($admin, $supervisor);
+        $auth->addChild($supervisor, $manager);
 
-//        $manager = $auth->createRole('manager');
-//        $auth->add($manager);
-//
-//        $auth->addChild($supervisor, $manager);
+        $auth->assign($supervisor, 1);
+        $auth->assign($supervisor, 2);
+        $auth->assign($supervisor, 3);
+        $auth->assign($manager, 4);
 
-        $supervisor = $auth->getRole('supervisor');
-        $createPost = $auth->createPermission('createPost');
-        $createPost->description = 'Create a post';
-        $auth->add($createPost);
+//        $createPost = $auth->createPermission('createPost');
+//        $createPost->description = 'Create a post';
+//        $auth->add($createPost);
 
 //        // добавляем роль "admin" и даём роли разрешение "updatePost"
 //        // а также все разрешения роли "author"
