@@ -19,6 +19,7 @@ $this->registerMetaTag(['charset' => Yii::$app->charset]);
 $this->registerMetaTag(['http-equiv' => 'X-UA-Compatible', 'content' => 'IE=edge']);
 $this->registerMetaTag(['name' => 'viewport', 'content' => 'width=device-width, initial-scale=1']);
 $this->registerCsrfMetaTags();
+$this->registerCssFile("https://use.fontawesome.com/releases/v5.3.1/css/all.css");
 $this->registerJs('$(document).keydown(function(event){
     if (event.keyCode == 32 && (event.ctrlKey)) {
         event.preventDefault();
