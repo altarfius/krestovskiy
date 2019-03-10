@@ -29,4 +29,15 @@ class SiteController extends Controller
             ],
         ];
     }
+
+    public function actionGeneratehash()
+    {
+        $password = 'amurashova';
+        $hash = \Yii::$app->security->generatePasswordHash($password);
+        echo $hash . ' is ' . \Yii::$app->security->validatePassword($password, $hash);
+    }
+
+    public function actionDate() {
+        echo date('Y-m-d H:i:s');
+    }
 }
