@@ -8,6 +8,7 @@ $config = [
     'language' => 'ru',
     'name' => 'ГК Крестовский сад',
     'defaultRoute' => 'candidate',
+    'homeUrl' => 'index.php?r=candidate/show',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'aliases' => [

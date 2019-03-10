@@ -23,6 +23,7 @@ class UserController extends Controller
 
         $user = new User();
         if ($user->load(Yii::$app->request->post()) && $user->login()) {
+            Yii::$app->session->setFlash('info', 'Добро пожаловать, ' . Yii::$app->user->identity->name . '!');
             return $this->goBack();
         }
 

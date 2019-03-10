@@ -38,6 +38,6 @@ class SiteController extends Controller
     }
 
     public function actionDate() {
-        echo date('Y-m-d H:i:s');
+        echo date(\DateTime::ISO8601);
     }
 }

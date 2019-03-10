@@ -8,6 +8,8 @@ use Yii;
 
 class Candidate extends ActiveRecord
 {
+    public $type = 1;
+
     public static function tableName()
     {
         return '{{employee}}';
@@ -27,13 +29,13 @@ class Candidate extends ActiveRecord
             'metro' => 'Метро',
             'metro.name' => 'Ближайшее метро',
             'call_type' => 'Тип звонка',
-            'type' => 'Направление',
             'interview_date' => 'Дата собеседования',
             'category.name' => 'Вакансия',
             'status.name' => 'Статус',
             'status' => 'Статус',
-            'division' => 'Ресторан',
-            'division.name' => 'Ресторан',
+            'type' => 'Подразделение',
+            'division' => 'Подразделение',
+            'division.name' => 'Подразделение',
             'nationality' => 'Гражданство',
             'nationality.name' => 'Гражданство',
             'fullname' => 'Ф.И.О.',
@@ -49,6 +51,9 @@ class Candidate extends ActiveRecord
             [['surname', 'name', 'patronymic', 'age'], 'trim'],
             ['age', 'integer', 'min' => 18, 'max' => 65],
             ['interview_date', 'date'],
+            ['interview_date', 'filter', 'filter' => function($value) {
+                return Yii::$app->formatter->asDate($value, 'yyyy-MM-dd');
+            }],
         ];
     }
 
@@ -69,14 +74,10 @@ class Candidate extends ActiveRecord
             $this->is_trainee = 1;
         }
 
-        $this->manager_id = 1;
+        $this->manager_id = Yii::$app->user->id;
 
-        $now = new \DateTime();
-
-        $this->update_user_id = 1;
-        $this->update_time = $now->format('Y-m-d H:i:s');
-
-        $this->interview_date = \Yii::$app->formatter->asDate($this->interview_date, 'yyyy-MM-dd');
+        $this->update_user_id = Yii::$app->user->id;
+        $this->update_time = date(DATE_ISO8601);
 
         if ($insert) {
             $this->create_user_id = $this->update_user_id;
@@ -84,22 +85,6 @@ class Candidate extends ActiveRecord
         }
 
         return true;
-    }
-
-    public function afterSave($insert, $changedAttributes)
-    {
-        parent::afterSave($insert, $changedAttributes);
-
-        $this->interview_date = \Yii::$app->formatter->asDate($this->interview_date);
-
-//        Yii::$app->session->setFlash('success', 'Кандидат сохранён');
-    }
-
-    public function afterFind()
-    {
-        parent::afterFind();
-
-        $this->interview_date = \Yii::$app->formatter->asDate($this->interview_date);
     }
 
     public function setCategory($category)

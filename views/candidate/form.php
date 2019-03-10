@@ -1,18 +1,17 @@
 <?php
 
-use app\models\Metro;
 use kartik\bs4dropdown\ButtonDropdown;
 use kartik\date\DatePicker;
+use kartik\depdrop\DepDrop;
 use kartik\form\ActiveForm;
 use kartik\builder\Form;
-use kartik\helpers\Html;
 use kartik\icons\Icon;
 use yii\bootstrap4\Alert;
+use yii\helpers\Url;
 use yii\web\JsExpression;
 use yii\widgets\MaskedInput;
 use kartik\select2\Select2;
 use yii\helpers\ArrayHelper;
-use app\models\Candidate;
 
 $form = ActiveForm::begin([
     'id' => 'new-candidate-form',
@@ -23,13 +22,13 @@ $form = ActiveForm::begin([
     ],
 ]);
 
-//echo Alert::widget([
-//    'body' => Icon::show('exclamation-circle') . ' Все поля обязательны для заполнения!',
-//    'closeButton' => false,
-//    'options' => [
-//        'class' => 'alert-warning',
-//    ],
-//]);
+echo Alert::widget([
+    'body' => Icon::show('exclamation-circle') . ' Все поля обязательны для заполнения!',
+    'closeButton' => false,
+    'options' => [
+        'class' => 'alert-warning',
+    ],
+]);
 
 echo Form::widget([
     'model' => $candidate,
@@ -143,54 +142,29 @@ echo Form::widget([
     'compactGrid' => true,
     'attributes' => [
         'type' => [
-            'type' => Form::INPUT_RADIO_BUTTON_GROUP,
-            'items' => [0 => 'Офис', 1 => 'Ресторан'],
-            'options' => ['class' => 'btn-block'],
-        ],
-        'category' => [
             'type' => Form::INPUT_WIDGET,
             'widgetClass' => Select2::class,
             'options' => [
-                'data' => ArrayHelper::map($categories, 'id', 'name', function ($category) {
-                    return $category->categoryType->name;
-                }),
+                'data' => ArrayHelper::map($divisionTypes, 'id', 'name'),
                 'options' => ['placeholder' => 'Выберите...'],
+                'hideSearch' => true,
+            ],
+        ],
+        'division' => [
+            'label' => '&nbsp;',
+            'type' => Form::INPUT_WIDGET,
+            'widgetClass' => DepDrop::class,
+            'options' => [
+                'type' => DepDrop::TYPE_SELECT2,
+                'select2Options' => [
+                    'hideSearch' => true,
+                ],
                 'pluginOptions' => [
-                    'allowClear' => true
+                    'depends' => ['candidate-type'],
+                    'placeholder' => 'Выберите...',
+                    'url' => Url::to(['division/getdivisionsbytype']),
                 ],
             ],
-//            'fieldConfig' => [
-//                'addon' => [
-//                    'prepend' => [
-//                        'content' =>
-//                            ButtonDropdown::widget([
-//                            'label' => 'Ресторан',
-//                            'dropdown' => [
-//                                'items' => [
-//                                    ['label' => 'Ресторан', 'url' => '#', 'linkOptions' => [
-////                                        'onclick' => new JsExpression('
-////                                            $("#w4-button").text("Паспорт РФ");
-////                                            $("#trainee-passport_number").inputmask("9999 999999", { "clearIncomplete": true });
-////                                            $("#trainee-passport_type").val(' . Trainee::RUSSIAN_PASSPORT . ');
-////                                        '),
-//                                    ]],
-//                                    ['label' => 'Офис', 'url' => '#', 'linkOptions' => [
-////                                        'onclick' => new JsExpression('
-////                                            $("#w4-button").text("Иностранный паспорт");
-////                                            $("#trainee-passport_number").inputmask("*{1,100}");
-////                                            $("#trainee-passport_type").val(' . Trainee::FOREIGN_PASSPORT . ');
-////                                        '),
-//                                    ]],
-//                                ],
-//                            ],
-//                            'buttonOptions' => ['class' => 'btn-primary'],
-//                            'renderContainer' => false,
-//                        ]),
-//                        'asButton' => true,
-//                    ],
-//                ],
-//            ],
-            'columnOptions' => ['colspan' => 2],
         ],
     ],
 ]);
@@ -200,13 +174,14 @@ echo Form::widget([
     'form' => $form,
     'columns' => 2,
     'compactGrid' => true,
-//    'contentBefore' => Html::tag('legend', Html::tag('small', 'Вакансия'), ['class' => 'text-info']),
     'attributes' => [
-        'division' => [
+        'category' => [
             'type' => Form::INPUT_WIDGET,
             'widgetClass' => Select2::class,
             'options' => [
-                'data' => ArrayHelper::map($divisions, 'id', 'name'),
+                'data' => ArrayHelper::map($categories, 'id', 'name', function ($category) {
+                    return $category->categoryType->name;
+                }),
                 'options' => ['placeholder' => 'Выберите...'],
                 'pluginOptions' => [
                     'allowClear' => true

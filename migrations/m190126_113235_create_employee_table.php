@@ -23,7 +23,6 @@ class m190126_113235_create_employee_table extends Migration
             'phone' => $this->string(18),
             'call_type' => $this->tinyInteger(1),
             'interview_date' => $this->date(),
-            'type' => $this->tinyInteger(1),
             'category_id' => $this->integer()->notNull(),
             'manager_id' => $this->integer()->notNull(),
             'source_id' => $this->integer()->notNull(),

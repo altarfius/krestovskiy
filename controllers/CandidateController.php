@@ -2,9 +2,11 @@
 namespace app\controllers;
 
 use app\models\CandidateSearch;
+use app\models\Division;
+use app\models\DivisionType;
+use app\models\Nationality;
 use app\models\Status;
 use app\models\Trainee;
-use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use app\models\Candidate;
@@ -39,7 +41,7 @@ class CandidateController extends Controller
 
     public function actionIndex()
     {
-        return $this->actionShow();
+        return $this->redirect(['candidate/show']);
     }
 
     public function actionShow()
@@ -71,6 +73,9 @@ class CandidateController extends Controller
             'categories' => Category::find()->all(),
             'sources' => Source::find()->all(),
             'metros' => Metro::find()->all(),
+            'nationalities' => Nationality::find()->all(),
+            'divisions' => Division::find()->all(),
+            'statuses' => Status::find()->all(),
         ]);
     }
 

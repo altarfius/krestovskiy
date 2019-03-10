@@ -75,7 +75,7 @@ class User extends ActiveRecord implements IdentityInterface
         $this->_user = User::find()->andWhere(['login' => $this->login])->one();
 
         if ($this->_user == null || !Yii::$app->security->validatePassword($this->password, $this->_user->hash)) {
-            $this->addError($attribute, 'Incorrect username or password.');
+            $this->addError($attribute, 'Неверное имя пользователя и/или пароль');
         }
     }
 

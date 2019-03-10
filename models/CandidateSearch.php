@@ -25,7 +25,7 @@ class CandidateSearch extends Candidate
 
     public function search($params)
     {
-        $query = Candidate::find()->joinWith(['category', 'division']);
+        $query = Candidate::find()->joinWith(['category', 'division', 'manager manager']);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

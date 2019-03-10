@@ -1,6 +1,7 @@
 <?php
 
 use app\models\Division;
+use app\models\DivisionType;
 use app\models\Nationality;
 use kartik\helpers\Html;
 use kartik\icons\Icon;
@@ -40,5 +41,6 @@ Modal::begin([
         'divisions' => Division::find()->all(),
         'nationalities' => Nationality::find()->all(),
         'statuses' => Status::find()->byStage()->all(),
+        'divisionTypes' => DivisionType::find()->all(),
     ]);
 Modal::end();
