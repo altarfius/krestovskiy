@@ -8,6 +8,7 @@
 
 namespace app\models;
 
+use kartik\helpers\Html;
 use yii\db\ActiveRecord;
 
 class Metro extends ActiveRecord
@@ -19,4 +20,8 @@ class Metro extends ActiveRecord
         4 => 'rgb(234,113,37',
         5 => 'rgb(112,39,133)',
     ];
+
+    public function renderNameWithImg() {
+        return Html::img('img/line' . $this->line . '-min.png') . ' ' . $this->name;
+    }
 }

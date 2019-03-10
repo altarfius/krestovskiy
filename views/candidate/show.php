@@ -15,7 +15,6 @@ echo Html::beginTag('div', ['class' => 'row']);
 
     echo Html::beginTag('div', ['class' => 'col-3']);
         echo Html::beginTag('div', ['class' => 'row']);
-//            echo $this->render('modal');
             echo Html::button(Icon::show('plus') . ' Новый кандидат', [
                 'class' => 'btn btn-primary mt-2 ml-3',
                 'data-toggle' => 'modal',
@@ -62,13 +61,13 @@ echo Html::beginTag('div', ['class' => 'row']);
                     'attribute' => 'fullname',
                     'vAlign' => GridView::ALIGN_MIDDLE,
                 ],
-                [
-                    'attribute' => 'gender',
-                    'value' => function($candidate) {
-                        return $candidate->genderFullText;
-                    },
-                    'vAlign' => GridView::ALIGN_MIDDLE,
-                ],
+//                [
+//                    'attribute' => 'gender',
+//                    'value' => function($candidate) {
+//                        return $candidate->genderFullText;
+//                    },
+//                    'vAlign' => GridView::ALIGN_MIDDLE,
+//                ],
                 [
                     'attribute' => 'age',
                     'vAlign' => GridView::ALIGN_MIDDLE,
@@ -78,11 +77,19 @@ echo Html::beginTag('div', ['class' => 'row']);
                     'vAlign' => GridView::ALIGN_MIDDLE,
                 ],
                 [
+                    'attribute' => 'nationality.name',
+                    'vAlign' => GridView::ALIGN_MIDDLE,
+                ],
+                [
                     'attribute' => 'category.name',
                     'vAlign' => GridView::ALIGN_MIDDLE,
                 ],
                 [
-                    'attribute' => 'division.name',
+                    'attribute' => 'metro.name',
+                    'format' => 'raw',
+                    'value' => function($model) {
+                        return $model->metro->renderNameWithImg();
+                    },
                     'vAlign' => GridView::ALIGN_MIDDLE,
                 ],
                 [
@@ -104,6 +111,13 @@ echo Html::beginTag('div', ['class' => 'row']);
                 [
                     'attribute' => 'interview_date',
                     'format' => ['date', 'dd MMMM'],
+                    'vAlign' => GridView::ALIGN_MIDDLE,
+                ],
+                [
+                    'attribute' => 'manager.surname',
+                    'value' => function($model) {
+                        return $model->manager->initials;
+                    },
                     'vAlign' => GridView::ALIGN_MIDDLE,
                 ],
             ],

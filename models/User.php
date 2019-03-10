@@ -92,4 +92,8 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return $this->surname . ' ' . $this->name;
     }
+
+    public function getInitials() {
+        return trim($this->surname . ' ' . mb_substr($this->name, 0, 1) . '.');
+    }
 }

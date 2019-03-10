@@ -25,6 +25,7 @@ class Candidate extends ActiveRecord
             'category' => 'Вакансия',
             'source' => 'Источник',
             'metro' => 'Метро',
+            'metro.name' => 'Ближайшее метро',
             'call_type' => 'Тип звонка',
             'type' => 'Направление',
             'interview_date' => 'Дата собеседования',
@@ -34,7 +35,10 @@ class Candidate extends ActiveRecord
             'division' => 'Ресторан',
             'division.name' => 'Ресторан',
             'nationality' => 'Гражданство',
-            'fullname' => 'Ф.И.О.'
+            'nationality.name' => 'Гражданство',
+            'fullname' => 'Ф.И.О.',
+            'manager' => 'Менеджер',
+            'manager.surname' => 'Менеджер',
         ];
     }
 
