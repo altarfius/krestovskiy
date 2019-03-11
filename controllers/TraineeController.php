@@ -56,6 +56,8 @@ class TraineeController extends Controller
             throw new HttpException(400,'Стажёра с таким id не существует');
         }
 
+        Yii::debug(Yii::$app->request->post(), __METHOD__);
+
         if ($trainee->load(Yii::$app->request->post())) {
             Yii::debug($trainee->attributes, __METHOD__);
 
@@ -71,7 +73,7 @@ class TraineeController extends Controller
             'traineeProvider' => new ActiveDataProvider([
                 'query' => Trainee::find(),
             ]),
-            'newTrainee' => Trainee::findOne($id),
+            'newTrainee' => $trainee,
             'divisions' => Division::find()->all(),
             'categories' => Category::find()->all(),
             'statuses' => Status::find()->byStage(Trainee::STAGE_ID)->all(),

@@ -7,6 +7,8 @@ use yii\db\ActiveRecord;
 
 class Division extends ActiveRecord
 {
+    const RESTAURANT = 1;
+
     public static function find()
     {
         return new DivisionQuery(get_called_class());

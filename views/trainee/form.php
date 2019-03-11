@@ -18,12 +18,11 @@ $form = ActiveForm::begin([
     'id' => $formId,
     'type' => ActiveForm::TYPE_HORIZONTAL,
     'action' => ['trainee/edit', 'id' => $trainee->id],
-    'options' => ['enctype' => 'multipart/form-data'],
 ]);
 
 echo Html::beginTag('div', ['class' => 'row']);
     echo Html::beginTag('div', ['class' => 'col-5']);
-        echo Html::img('img/test.jpg.jpg', ['class' => 'img-thumbnail', 'style' => 'height: 300px;']);
+//        echo Html::img('img/test.jpg', ['class' => 'img-thumbnail', 'style' => 'height: 300px;']);
 //        echo Form::widget([
 //            'model' => $trainee,
 //            'form' => $form,
@@ -101,12 +100,44 @@ echo Html::beginTag('div', ['class' => 'row']);
     echo Html::endTag('div');
 echo Html::endTag('div');
 
+//if ($trainee->passport_scan != null) {
+//    $qwe = [
+//        'passport_scan' => [
+//            'type' => Form::INPUT_HIDDEN,
+//        //        'staticValue' => $trainee->passport_scan,
+//        ],
+//        'qwe' => [
+//            'type' => Form::INPUT_STATIC,
+//            'staticValue' => Html::a('Просмотр', 'passport/qwe.png', ['class' => 'btn btn-primary', 'target' => '_blank']),
+//            'columnOptions' => ['colspan' => 12],
+//        ],
+//    ];
+//} else {
+//    $qwe = [
+//        'type' => Form::INPUT_WIDGET,
+//        'widgetClass' => FileInput::class,
+//        'options' => [
+//            'pluginOptions' => [
+//                'required' => true,
+//                'showPreview' => false,
+//                'showCaption' => true,
+//                'showRemove' => true,
+//                'showUpload' => false,
+//                'browseClass' => 'btn btn-primary',
+//                'browseLabel' =>  'Загрузить',
+//            ],
+//            'options' => ['accept' => 'image/*']
+//        ],
+//        'columnOptions' => ['colspan' => 12],
+//    ];
+//}
+
 echo Form::widget([
     'model' => $trainee,
     'form' => $form,
     'columns' => 12,
     'compactGrid' => true,
-    'contentBefore' => Html::tag('legend', Html::tag('small', 'Паспортные данные'), ['class' => 'text-info']),
+//    'contentBefore' => Html::tag('legend', Html::tag('small', 'Паспортные данные'), ['class' => 'text-info']),
     'attributes' => [
         'passport_number' => [
             'type' => Form::INPUT_WIDGET,
@@ -171,15 +202,34 @@ echo Form::widget([
         ],
         'passport_issued' => [
             'type' => Form::INPUT_TEXTAREA,
-//            'label' => false,
             'options' => [
-                'placeholder' => $trainee->getAttributeLabel('passport_issued'),
                 'style' => 'resize: none;',
             ],
-//            'fieldConfig' => [
-//                'labelSpan' => 1,
-//            ],
             'columnOptions' => ['colspan' => 12],
+        ],
+        'passport_scan_file' => [
+            'type' => Form::INPUT_WIDGET,
+            'widgetClass' => FileInput::class,
+            'options' => [
+                'pluginOptions' => [
+                    'required' => true,
+                    'showPreview' => false,
+                    'showCaption' => true,
+                    'showRemove' => true,
+                    'showUpload' => false,
+                    'browseClass' => 'btn btn-primary',
+                    'browseLabel' =>  'Загрузить',
+                ],
+                'options' => ['accept' => 'image/*']
+            ],
+            'columnOptions' => ['colspan' => 12],
+            'visible' => $trainee->passport_scan == null,
+        ],
+        'passport_scan' => [
+            'type' => Form::INPUT_STATIC,
+            'staticValue' => Html::a('Просмотр', 'passport/' . $trainee->passport_scan, ['class' => 'btn btn-primary', 'target' => '_blank']),
+            'columnOptions' => ['colspan' => 12],
+            'visible' => $trainee->passport_scan != null,
         ],
     ]
 ]);
@@ -189,7 +239,7 @@ echo Form::widget([
     'form' => $form,
     'columns' => 12,
     'compactGrid' => true,
-    'contentBefore' => Html::tag('legend', Html::tag('small', 'ЛМК'), ['class' => 'text-info']),
+//    'contentBefore' => Html::tag('legend', Html::tag('small', 'ЛМК'), ['class' => 'text-info']),
     'attributes' => [
         'medical' => [
             'type' => Form::INPUT_WIDGET,
@@ -236,7 +286,7 @@ echo Form::widget([
     'form' => $form,
     'columns' => 12,
     'compactGrid' => true,
-    'contentBefore' => Html::tag('legend', Html::tag('small', 'Стажировка'), ['class' => 'text-info']),
+//    'contentBefore' => Html::tag('legend', Html::tag('small', 'Стажировка'), ['class' => 'text-info']),
     'attributes' => [
         'division' => [
             'type' => Form::INPUT_WIDGET,

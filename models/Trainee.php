@@ -22,6 +22,8 @@ class Trainee extends Candidate
     const RUSSIAN_PASSPORT_MASK = '9999-999999';
     const FOREIGN_PASSPORT_MASK = '*{1,100}';
 
+    public $passport_scan_file;
+
     public function attributeLabels()
     {
         return array_merge(parent::attributeLabels(), [
@@ -29,6 +31,8 @@ class Trainee extends Candidate
             'passport_date' => 'Дата выдачи',
             'passport_issued' => 'Кем выдан',
             'passport_number' => 'Серия и номер',
+            'passport_scan' => 'Скан паспорта',
+            'passport_scan_file' => 'Скан паспорта',
             'photoFile' => 'Фото',
             'medical' => 'ЛМК',
             'medical_date' => 'Действительна до',
@@ -43,7 +47,8 @@ class Trainee extends Candidate
             [['passport_type', 'passport_date', 'passport_issued', 'passport_number', 'medical', 'medical_date', 'trainee_date'], 'required'],
             [['passport_number', 'passport_issued'], 'trim'],
             [['passport_date', 'medical_date', 'trainee_date'], 'date'],
-//            ['photo', 'image'],
+            ['passport_scan_file', 'image'],
+//            ['passport_scan', 'file', 'skipOnEmpty' => false, 'extensions' => ['pdf']],
             [['birthday'], 'safe'],
         ]);
     }
@@ -74,6 +79,12 @@ class Trainee extends Candidate
 //
 //        }
 
+        $this->passport_scan_file = UploadedFile::getInstance($this, 'passport_scan_file');
+        if ($this->passport_scan_file != null) {
+            $this->passport_scan = 'passport-' . rand(1, 1000000) . '.' . $this->passport_scan_file->extension;
+            $this->passport_scan_file->saveAs(Yii::getAlias('@webroot/passport/' . $this->passport_scan));
+        }
+
         $this->passport_date = Yii::$app->formatter->asDate($this->passport_date, 'yyyy-MM-dd');
         $this->medical_date = Yii::$app->formatter->asDate($this->medical_date, 'yyyy-MM-dd');
         $this->trainee_date = Yii::$app->formatter->asDate($this->trainee_date, 'yyyy-MM-dd');
@@ -81,6 +92,8 @@ class Trainee extends Candidate
         if ($this->status_id == Status::INVITED) {
             $this->status_id = Status::STAGED;
         }
+
+        Yii::debug($this->attributes, __METHOD__);
 
         return true;
     }

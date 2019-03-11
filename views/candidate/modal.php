@@ -11,6 +11,7 @@ use app\models\Category;
 use app\models\Source;
 use app\models\Metro;
 use app\models\Status;
+use yii\web\JsExpression;
 
 Modal::begin([
     'size' => Modal::SIZE_LARGE,
@@ -24,7 +25,7 @@ Modal::begin([
             'type' => 'button',
             'form' => 'new-candidate-form',
             'class' => 'btn btn-secondary',
-            'onclick' => new \yii\web\JsExpression('$("#new-candidate-modal").modal("hide")'),
+            'onclick' => new JsExpression('$("#new-candidate-modal").modal("hide")'),
         ]),
         Html::submitButton('Сохранить', [
             'type' => 'button',
@@ -38,7 +39,7 @@ Modal::begin([
         'categories' => Category::find()->all(),
         'sources' => Source::find()->all(),
         'metros' => Metro::find()->all(),
-        'divisions' => Division::find()->all(),
+        'divisions' => Division::find()->byType(Division::RESTAURANT)->all(),
         'nationalities' => Nationality::find()->all(),
         'statuses' => Status::find()->byStage()->all(),
         'divisionTypes' => DivisionType::find()->all(),

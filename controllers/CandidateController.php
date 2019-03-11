@@ -85,11 +85,7 @@ class CandidateController extends Controller
         $candidate = Candidate::findOne($id);
 
         $candidate->setStatus($statusId);
-
         if ($candidate->save()) {
-//            return $this->renderAjax('statusDropdown', [
-//                'model' => $candidate,
-//            ]);
             if ($candidate->status->next_stage == Trainee::STAGE_ID) {
                 return $this->redirect(['trainee/edit', 'id' => $candidate->id]);
             }

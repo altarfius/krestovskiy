@@ -34,7 +34,8 @@ class m190126_113235_create_employee_table extends Migration
             'create_user_id' => $this->integer()->notNull(),
             'update_user_id' => $this->integer()->notNull(),
             'create_time' => $this->dateTime()->notNull(),
-            'update_time' => $this->dateTime()->notNull()
+            'update_time' => $this->dateTime()->notNull(),
+            'passport_scan' => $this->string(),
         ]);
 
         // creates index for column `create_user_id`

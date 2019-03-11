@@ -1,14 +1,11 @@
 <?php
 
-use kartik\bs4dropdown\ButtonDropdown;
 use kartik\date\DatePicker;
 use kartik\depdrop\DepDrop;
 use kartik\form\ActiveForm;
 use kartik\builder\Form;
 use kartik\icons\Icon;
-use yii\bootstrap4\Alert;
 use yii\helpers\Url;
-use yii\web\JsExpression;
 use yii\widgets\MaskedInput;
 use kartik\select2\Select2;
 use yii\helpers\ArrayHelper;
@@ -19,14 +16,6 @@ $form = ActiveForm::begin([
     'action' => ['candidate/edit'],
     'fieldConfig' => [
         'labelSpan' => 4,
-    ],
-]);
-
-echo Alert::widget([
-    'body' => Icon::show('exclamation-circle') . ' Все поля обязательны для заполнения!',
-    'closeButton' => false,
-    'options' => [
-        'class' => 'alert-warning',
     ],
 ]);
 
@@ -151,13 +140,16 @@ echo Form::widget([
             ],
         ],
         'division' => [
-            'label' => '&nbsp;',
             'type' => Form::INPUT_WIDGET,
             'widgetClass' => DepDrop::class,
             'options' => [
+                'data' => ArrayHelper::map($divisions, 'id', 'name'),
                 'type' => DepDrop::TYPE_SELECT2,
                 'select2Options' => [
                     'hideSearch' => true,
+                    'pluginOptions' => [
+                        'allowClear' => true,
+                    ],
                 ],
                 'pluginOptions' => [
                     'depends' => ['candidate-type'],
