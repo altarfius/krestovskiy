@@ -47,9 +47,9 @@ class Trainee extends Candidate
             [['passport_type', 'passport_date', 'passport_issued', 'passport_number', 'medical', 'medical_date', 'trainee_date'], 'required'],
             [['passport_number', 'passport_issued'], 'trim'],
             [['passport_date', 'medical_date', 'trainee_date'], 'date'],
-            ['passport_scan_file', 'image'],
+            ['passport_scan_file', 'image', 'skipOnEmpty' => true],
 //            ['passport_scan', 'file', 'skipOnEmpty' => false, 'extensions' => ['pdf']],
-            [['birthday'], 'safe'],
+            [['birthday', 'passport_scan'], 'safe'],
         ]);
     }
 

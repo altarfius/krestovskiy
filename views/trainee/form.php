@@ -211,8 +211,9 @@ echo Form::widget([
             'type' => Form::INPUT_WIDGET,
             'widgetClass' => FileInput::class,
             'options' => [
+//                'id' => ''
                 'pluginOptions' => [
-                    'required' => true,
+                    'required' => false,
                     'showPreview' => false,
                     'showCaption' => true,
                     'showRemove' => true,
