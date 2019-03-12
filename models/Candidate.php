@@ -47,7 +47,7 @@ class Candidate extends ActiveRecord
     public function rules()
     {
         return [
-            [['surname', 'name', 'patronymic', 'gender', 'age', 'phone', 'category', 'source', 'metro', 'call_type', 'status', 'division', 'nationality'], 'required'],
+            [['surname', 'name', 'gender', 'age', 'phone', 'category', 'source', 'metro', 'call_type', 'status', 'division', 'nationality'], 'required'],
             [['surname', 'name', 'patronymic', 'age'], 'trim'],
             ['age', 'integer', 'min' => 18, 'max' => 65],
 //            ['interview_date', 'date'],
