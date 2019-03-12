@@ -32,9 +32,11 @@ class RbacController extends Controller
         $auth->addChild($supervisor, $manager);
 
         $auth->assign($supervisor, 1);
-        $auth->assign($supervisor, 2);
-        $auth->assign($supervisor, 3);
-        $auth->assign($manager, 4);
+        $auth->assign($supervisor, 5);
+        $auth->assign($supervisor, 6);
+        $auth->assign($manager, 7);
+        $auth->assign($manager, 10);
+        $auth->assign($manager, 11);
 
 //        $createPost = $auth->createPermission('createPost');
 //        $createPost->description = 'Create a post';
