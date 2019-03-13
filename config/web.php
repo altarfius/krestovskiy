@@ -52,6 +52,7 @@ $config = [
         ],
         'formatter' => [
             'dateFormat' => 'dd.MM.yyyy',
+            'timeZone' => 'UTC',
             'decimalSeparator' => ',',
             'thousandSeparator' => ' ',
             'currencyCode' => 'RUR',

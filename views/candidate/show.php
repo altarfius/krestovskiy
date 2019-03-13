@@ -109,8 +109,8 @@ echo Html::beginTag('div', ['class' => 'row']);
                     },
                 ],
                 [
-                    'attribute' => 'interview_date',
-                    'format' => ['date', 'dd MMMM'],
+                    'attribute' => 'interview_datetime',
+                    'format' => ['date', 'dd MMMM в HH:mm'],
                     'vAlign' => GridView::ALIGN_MIDDLE,
                 ],
                 [

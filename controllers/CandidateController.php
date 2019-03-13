@@ -75,6 +75,7 @@ class CandidateController extends Controller
             'metros' => Metro::find()->all(),
             'nationalities' => Nationality::find()->all(),
             'divisions' => Division::find()->all(),
+            'divisionTypes' => DivisionType::find()->all(),
             'statuses' => Status::find()->all(),
         ]);
     }

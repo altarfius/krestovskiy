@@ -8,7 +8,10 @@ use Yii;
 
 class Candidate extends ActiveRecord
 {
+    const SCENARIO_NEW = 'scenario_new';
+
     public $type = 1;
+    public $interview_datetime;
 
     public static function tableName()
     {
@@ -41,6 +44,7 @@ class Candidate extends ActiveRecord
             'fullname' => 'Ф.И.О.',
             'manager' => 'Менеджер',
             'manager.surname' => 'Менеджер',
+            'interview_datetime' => 'Время собеседования',
         ];
     }
 
@@ -51,9 +55,9 @@ class Candidate extends ActiveRecord
             [['surname', 'name', 'patronymic', 'age'], 'trim'],
             ['age', 'integer', 'min' => 18, 'max' => 65],
 //            ['interview_date', 'date'],
-            ['interview_date', 'filter', 'filter' => function($value) {
-                return Yii::$app->formatter->asDate($value, 'yyyy-MM-dd');
-            }],
+            ['interview_datetime', 'filter', 'filter' => function($value) {
+                return Yii::$app->formatter->asDatetime($value, 'yyyy-MM-dd HH:mm');
+            }, 'skipOnEmpty' => true],
         ];
     }
 
@@ -79,12 +83,24 @@ class Candidate extends ActiveRecord
         $this->update_user_id = Yii::$app->user->id;
         $this->update_time = date(DATE_ISO8601);
 
+        if ($this->interview_datetime != null) {
+            $this->interview_date = Yii::$app->formatter->asDate($this->interview_datetime, 'yyyy-MM-dd');
+            $this->interview_time = Yii::$app->formatter->asTime($this->interview_datetime);
+        }
+
         if ($insert) {
             $this->create_user_id = $this->update_user_id;
             $this->create_time = $this->update_time;
         }
 
         return true;
+    }
+
+    public function afterFind()
+    {
+        parent::afterFind();
+
+        $this->setInterviewDatetime();
     }
 
     public function setCategory($category)
@@ -172,6 +188,12 @@ class Candidate extends ActiveRecord
 
     public function getFullname() {
         return trim($this->surname . ' ' . $this->name . ' ' . $this->patronymic);
+    }
+
+    public function setInterviewDatetime() {
+        if ($this->interview_date !== null && $this->interview_time != null) {
+            $this->interview_datetime = Yii::$app->formatter->asDatetime($this->interview_date . ' ' . $this->interview_time, 'yyyy-MM-dd HH:mm');
+        }
     }
 
     public function renderDropdownItems() {

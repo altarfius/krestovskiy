@@ -1,6 +1,7 @@
 <?php
 
 use kartik\date\DatePicker;
+use kartik\datetime\DateTimePicker;
 use kartik\depdrop\DepDrop;
 use kartik\form\ActiveForm;
 use kartik\builder\Form;
@@ -180,21 +181,23 @@ echo Form::widget([
                 ],
             ],
         ],
-        'interview_date' => [
+        'interview_datetime' => [
             'type' => Form::INPUT_WIDGET,
-            'widgetClass' => DatePicker::class,
+            'widgetClass' => DatetimePicker::class,
             'options' => [
-                'type' => DatePicker::TYPE_COMPONENT_PREPEND,
+                'type' => DateTimePicker::TYPE_COMPONENT_PREPEND,
                 'removeButton' => false,
                 'pluginOptions' => [
                     'autoclose' => true,
+                    'format' => 'dd.mm.yyyy HH:ii',
+                    'minuteStep' => 15,
                 ],
                 'options' => [
                     'autocomplete' => 'off',
                 ],
             ],
             'fieldConfig' => [
-                'labelSpan' => 6,
+                'labelSpan' => 5,
             ],
         ],
         'source' => [
