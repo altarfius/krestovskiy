@@ -110,7 +110,13 @@ echo Html::beginTag('div', ['class' => 'row']);
                 ],
                 [
                     'attribute' => 'interview_datetime',
-                    'format' => ['date', 'dd MMMM в HH:mm'],
+                    'value' => function($model) {
+                        $format = 'dd MMMM';
+                        if ($model->interview_time != null) {
+                            $format .= ' в HH:mm';
+                        }
+                        return Yii::$app->formatter->asDatetime($model->interview_datetime, $format);
+                    },
                     'vAlign' => GridView::ALIGN_MIDDLE,
                 ],
                 [
