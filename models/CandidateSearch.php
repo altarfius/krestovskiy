@@ -25,7 +25,7 @@ class CandidateSearch extends Candidate
 
     public function search($params)
     {
-        $query = Candidate::find()->joinWith(['category', 'division', 'manager manager']);
+        $query = Candidate::find()->joinWith(['category', 'division', 'status', 'manager manager', 'metro', 'nationality']);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -38,9 +38,10 @@ class CandidateSearch extends Candidate
                     'manager.surname',
                     'metro.name',
                     'nationality.name',
+                    'create_time'
                 ],
                 'defaultOrder' => [
-                    'interview_date' => SORT_ASC,
+                    'create_time' => SORT_DESC,
                 ],
             ],
         ]);

@@ -126,6 +126,11 @@ echo Html::beginTag('div', ['class' => 'row']);
                     },
                     'vAlign' => GridView::ALIGN_MIDDLE,
                 ],
+                [
+                    'attribute' => 'create_time',
+                    'format' => ['date', 'dd MMMM в HH:mm'],
+                    'vAlign' => GridView::ALIGN_MIDDLE,
+                ],
             ],
         ]);
     echo Html::endTag('div');

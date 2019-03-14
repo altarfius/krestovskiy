@@ -45,6 +45,7 @@ class Candidate extends ActiveRecord
             'manager' => 'Менеджер',
             'manager.surname' => 'Менеджер',
             'interview_datetime' => 'Время собеседования',
+            'create_time' => 'Создан',
         ];
     }
 
