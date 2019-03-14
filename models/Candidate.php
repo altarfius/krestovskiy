@@ -191,7 +191,7 @@ class Candidate extends ActiveRecord
     }
 
     public function setInterviewDatetime() {
-        if ($this->interview_date !== null && $this->interview_time != null) {
+        if ($this->interview_date !== null) {
             $this->interview_datetime = Yii::$app->formatter->asDatetime($this->interview_date . ' ' . $this->interview_time, 'yyyy-MM-dd HH:mm');
         }
     }
