@@ -49,7 +49,9 @@ class Candidate extends ActiveRecord
         return [
             [['surname', 'name', 'gender', 'age', 'phone', 'category', 'source', 'metro', 'call_type', 'status', 'division', 'nationality'], 'required'],
             [['surname', 'name', 'patronymic', 'age'], 'trim'],
-            ['phone', 'validateDuplicate'],
+            ['phone', 'validateDuplicate', 'when' => function($candidate) {
+                return $candidate->isNewRecord;
+            }],
             ['age', 'integer', 'min' => 18, 'max' => 65],
 //            ['interview_date', 'date'],
             ['interview_datetime', 'filter', 'filter' => function($value) {
