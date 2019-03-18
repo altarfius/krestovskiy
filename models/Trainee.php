@@ -19,7 +19,7 @@ class Trainee extends Candidate
     const RUSSIAN_PASSPORT = 1;
     const FOREIGN_PASSPORT = 2;
 
-    const RUSSIAN_PASSPORT_MASK = '9999-999999';
+    const RUSSIAN_PASSPORT_MASK = '9999 999999';
     const FOREIGN_PASSPORT_MASK = '*{1,100}';
 
     public $passport_scan_file;
@@ -44,7 +44,7 @@ class Trainee extends Candidate
     {
         return array_merge(parent::rules(), [
             ['passport_type', 'default', 'value' => self::RUSSIAN_PASSPORT],
-            [['passport_type', 'passport_date', 'passport_issued', 'passport_number', 'medical', 'medical_date', 'trainee_date'], 'required'],
+            [['passport_type', 'passport_date', 'passport_issued', 'passport_number', 'medical'], 'required'],
             [['passport_number', 'passport_issued'], 'trim'],
             [['passport_date', 'medical_date', 'trainee_date'], 'date'],
             ['passport_scan_file', 'image', 'skipOnEmpty' => true],
@@ -85,13 +85,13 @@ class Trainee extends Candidate
             $this->passport_scan_file->saveAs(Yii::getAlias('@webroot/passport/' . $this->passport_scan));
         }
 
+        if ($this->status_id == Status::INVITED && !empty($this->trainee_date)) {
+            $this->status_id = Status::STAGED;
+        }
+
         $this->passport_date = Yii::$app->formatter->asDate($this->passport_date, 'yyyy-MM-dd');
         $this->medical_date = Yii::$app->formatter->asDate($this->medical_date, 'yyyy-MM-dd');
         $this->trainee_date = Yii::$app->formatter->asDate($this->trainee_date, 'yyyy-MM-dd');
-
-        if ($this->status_id == Status::INVITED) {
-            $this->status_id = Status::STAGED;
-        }
 
         Yii::debug($this->attributes, __METHOD__);
 

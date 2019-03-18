@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f9a87ea902ce9e94c2ad60706469cb72",
+    "content-hash": "e14d063bea621cde26972c2611e3baf6",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -1300,6 +1300,59 @@
                 "yii2"
             ],
             "time": "2016-01-10T16:47:35+00:00"
+        },
+        {
+            "name": "kartik-v/yii2-widget-typeahead",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kartik-v/yii2-widget-typeahead.git",
+                "reference": "825d37a9587e8a82f729cdd81f05e62b43a6dd10"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kartik-v/yii2-widget-typeahead/zipball/825d37a9587e8a82f729cdd81f05e62b43a6dd10",
+                "reference": "825d37a9587e8a82f729cdd81f05e62b43a6dd10",
+                "shasum": ""
+            },
+            "require": {
+                "kartik-v/yii2-krajee-base": ">=2.0.0"
+            },
+            "type": "yii2-extension",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "kartik\\typeahead\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Kartik Visweswaran",
+                    "email": "kartikv2@gmail.com",
+                    "homepage": "http://www.krajee.com/"
+                }
+            ],
+            "description": "Enhanced Yii2 wrapper for the Twitter Typeahead plugin (sub repo split from yii2-widgets).",
+            "homepage": "https://github.com/kartik-v/yii2-widget-typeahead",
+            "keywords": [
+                "dropdown",
+                "extension",
+                "form",
+                "jquery",
+                "plugin",
+                "typeahead",
+                "widget",
+                "yii2"
+            ],
+            "time": "2018-11-05T12:35:26+00:00"
         },
         {
             "name": "npm-asset/bootstrap",
@@ -4467,7 +4520,8 @@
         "yiisoft/yii2-bootstrap4": 20,
         "kartik-v/yii2-field-range": 20,
         "kartik-v/dependent-dropdown": 20,
-        "kartik-v/yii2-widget-datetimepicker": 20
+        "kartik-v/yii2-widget-datetimepicker": 20,
+        "kartik-v/yii2-widget-typeahead": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

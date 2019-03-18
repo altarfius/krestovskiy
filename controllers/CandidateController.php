@@ -7,13 +7,18 @@ use app\models\DivisionType;
 use app\models\Nationality;
 use app\models\Status;
 use app\models\Trainee;
+use app\models\User;
+use kartik\form\ActiveForm;
 use yii\filters\AccessControl;
+use yii\helpers\ArrayHelper;
+use yii\helpers\VarDumper;
 use yii\web\Controller;
 use app\models\Candidate;
 use app\models\Category;
 use app\models\Source;
 use app\models\Metro;
 use Yii;
+use yii\web\Response;
 
 class CandidateController extends Controller
 {
@@ -52,7 +57,11 @@ class CandidateController extends Controller
         return $this->render('show', [
             'candidateProvider' => $candidateProvider,
             'candidateSearch' => $candidateSearch,
-            'statuses' => Status::find()->all(),
+            'nationalities' => Nationality::find()->all(),
+            'categories' => Category::find()->all(),
+            'metros' => Metro::find()->all(),
+            'statuses' => Status::find()->byStage()->all(), //TODO: Резервы не все отображаются при фильтре
+            'managers' => User::find()->all(),
         ]);
     }
 
@@ -63,12 +72,18 @@ class CandidateController extends Controller
             $candidate = new Candidate();
         }
 
+        if (Yii::$app->request->isAjax && $candidate->load(Yii::$app->request->post())) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return ActiveForm::validate($candidate, 'phone');
+        }
+
         if ($candidate->load(Yii::$app->request->post()) && $candidate->save()) {
-            Yii::$app->session->setFlash('success', 'Кандидат сохранён');
+            Yii::$app->session->setFlash('success', $candidate->fullname . ' сохранён в кандидаты');
             return $this->redirect(Yii::$app->request->referrer);
         }
 
         return $this->render('form', [
+            'formId' => 'candidate-form-' . $candidate->uniqueId,
             'candidate' => $candidate,
             'categories' => Category::find()->all(),
             'sources' => Source::find()->all(),
@@ -78,6 +93,23 @@ class CandidateController extends Controller
             'divisionTypes' => DivisionType::find()->all(),
             'statuses' => Status::find()->all(),
         ]);
+    }
+
+    public function actionFind($q) {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+
+        $candidates = Candidate::find()->likeFullname($q)->all();
+
+        $out = [];
+
+        foreach ($candidates as $candidate) {
+            $out[] = [
+                'id' => $candidate->id,
+                'value' => $candidate->fullname
+            ];
+        }
+
+        return $out;
     }
 
     //TODO: ajax

@@ -46,8 +46,6 @@ echo Html::beginTag('div', ['class' => 'row']);
             'containerOptions' => [
                 'class' => 'mt-2'
             ],
-//            'headerRowOptions' => ['class' => 'kartik-sheet-style'],
-//            'filterRowOptions' => ['class' => 'kartik-sheet-style'],
             'dataProvider'=> $traineeProvider,
             'filterModel' => $traineeSearch,
             'rowOptions' => function($model) {
@@ -58,11 +56,9 @@ echo Html::beginTag('div', ['class' => 'row']);
                     'class' => SerialColumn::class,
                     'width' => '36px',
                     'header' => '#',
-//                    'vAlign' => GridView::ALIGN_MIDDLE,
                 ],
                 [
                     'attribute' => 'fullname',
-//                    'vAlign' => GridView::ALIGN_MIDDLE,
                     'mergeHeader' => true,
                     'format' => 'raw',
                     'value' => function($model) {
@@ -73,7 +69,6 @@ echo Html::beginTag('div', ['class' => 'row']);
                 ],
                 [
                     'attribute' => 'phone',
-//                    'vAlign' => GridView::ALIGN_MIDDLE,
                     'mergeHeader' => true,
                     'width' => '130px',
                 ],

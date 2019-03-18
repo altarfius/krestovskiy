@@ -38,9 +38,13 @@ class m190208_053735_insert_data_to_status_table extends Migration
             ['Отказ СБ', 3, 1, 'secondary'],
             //Окончание стажировки
             ['Работает с', 4, 4, 'success'],
-            ['Резерв', 4, 4, 'warning'],
+            ['Резерв', 4, 1, 'warning'],
             ['Отказ сотрудника', 4, 1, 'secondary'],
             ['Отказ ресторана', 4, 1, 'secondary'],
+            //Дополнительно
+            ['Резерв', 1, 1, 'warnning'],
+            ['Резерв', 2, 1, 'warnning'],
+            ['Резерв', 3, 1, 'warnning'],
         ]);
     }
 

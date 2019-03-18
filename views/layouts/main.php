@@ -3,6 +3,7 @@
 /* @var $this \yii\web\View */
 /* @var $content string */
 
+use app\models\Candidate;
 use app\widgets\Alert;
 use kartik\helpers\Html;
 use kartik\icons\Icon;
@@ -23,7 +24,7 @@ $this->registerCssFile("https://use.fontawesome.com/releases/v5.3.1/css/all.css"
 $this->registerJs('$(document).keydown(function(event){
     if (event.keyCode == 32 && (event.ctrlKey)) {
         event.preventDefault();
-        $("#new-candidate-modal").modal("show");
+        $("#candidate-modal-new").modal("show");
     }
 });', $this::POS_END);
 
@@ -89,7 +90,9 @@ echo Html::beginTag('body');
                 echo Html::endTag('div');
             echo Html::endTag('div');
 
-            echo $this->render('/candidate/modal');
+            echo $this->render('/candidate/modal', [
+                'candidate' => new Candidate(),
+            ]);
 
             echo $content;
 

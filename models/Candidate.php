@@ -30,20 +30,15 @@ class Candidate extends ActiveRecord
             'category' => 'Вакансия',
             'source' => 'Источник',
             'metro' => 'Метро',
-            'metro.name' => 'Ближайшее метро',
             'call_type' => 'Тип звонка',
             'interview_date' => 'Дата собеседования',
-            'category.name' => 'Вакансия',
-            'status.name' => 'Статус',
             'status' => 'Статус',
             'type' => 'Тип',
             'division' => 'Подразделение',
             'division.name' => 'Подразделение',
             'nationality' => 'Гражданство',
-            'nationality.name' => 'Гражданство',
             'fullname' => 'Ф.И.О.',
             'manager' => 'Менеджер',
-            'manager.surname' => 'Менеджер',
             'interview_datetime' => 'Время собеседования',
             'create_time' => 'Создан',
         ];
@@ -54,6 +49,7 @@ class Candidate extends ActiveRecord
         return [
             [['surname', 'name', 'gender', 'age', 'phone', 'category', 'source', 'metro', 'call_type', 'status', 'division', 'nationality'], 'required'],
             [['surname', 'name', 'patronymic', 'age'], 'trim'],
+            ['phone', 'validateDuplicate'],
             ['age', 'integer', 'min' => 18, 'max' => 65],
 //            ['interview_date', 'date'],
             ['interview_datetime', 'filter', 'filter' => function($value) {
@@ -191,9 +187,25 @@ class Candidate extends ActiveRecord
         return trim($this->surname . ' ' . $this->name . ' ' . $this->patronymic);
     }
 
+    public function getUniqueId() {
+        return $this->isNewRecord ? 'new' : $this->id;
+    }
+
     public function setInterviewDatetime() {
         if ($this->interview_date !== null) {
             $this->interview_datetime = Yii::$app->formatter->asDatetime($this->interview_date . ' ' . $this->interview_time, 'yyyy-MM-dd HH:mm');
+        }
+    }
+
+    public function validateDuplicate($attribute)
+    {
+        $duplicates = self::find()
+            ->byFullname($this->surname, $this->name, $this->patronymic)
+            ->byPhone($this->phone)
+            ->count();
+
+        if ($duplicates > 0) {
+            $this->addError($attribute, 'Кандидат с такими данными уже существует!');
         }
     }
 
@@ -226,5 +238,42 @@ class CandidateQuery extends ActiveQuery
     public function isCandidate()
     {
         return $this->andWhere(['is_candidate' => 1]);
+    }
+
+    public function bySurname($surname) {
+        return $this->andWhere(['like','surname', $surname, false, false]);
+    }
+
+    public function byName($name) {
+        return $this->andWhere(['like','name', $name, false, false]);
+    }
+
+    public function byPatronymic($patronymic) {
+        return $this->andWhere(['like','patronymic', $patronymic, false, false]);
+    }
+
+    public function byPhone($phone) {
+        return $this->andWhere(['phone' => $phone]);
+    }
+
+    public function byFullname($surname, $name, $patronymic) {
+        if (!empty($surname)) {
+            $this->bySurname($surname);
+        }
+        if (!empty($name)) {
+            $this->byName($name);
+        }
+        if (!empty($patronymic)) {
+            $this->byPatronymic($patronymic);
+        }
+
+        return $this;
+    }
+
+    public function likeFullname($query) {
+        return $this
+            ->where(['like', 'surname', $query])
+            ->orWhere(['like', 'name', $query])
+            ->orWhere(['like', 'patronymic', $query]);
     }
 }

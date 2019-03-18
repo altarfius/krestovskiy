@@ -78,6 +78,20 @@ echo Html::beginTag('div', ['class' => 'row']);
                         'widgetClass' => MaskedInput::class,
                         'options' => [
                             'mask' => '+7 (999) 999-99-99',
+                            'options' => [
+                                'id' => 'trainee-phone-' . $trainee->uniqueId,
+                                'class' => 'form-control'
+                            ],
+                            'clientOptions' => [
+                                'clearIncomplete' => true,
+                            ],
+                        ],
+                        'fieldConfig' => [
+                            'addon' => [
+                                'prepend' => [
+                                    'content' => Icon::show('mobile-alt'),
+                                ],
+                            ],
                         ],
                     ],
                     'metro' => [
@@ -85,7 +99,10 @@ echo Html::beginTag('div', ['class' => 'row']);
                         'widgetClass' => Select2::class,
                         'options' => [
                             'data' => ArrayHelper::map($metros, 'id', 'name'),
-                            'options' => ['placeholder' => 'Выберите...'],
+                            'options' => [
+                                'id' => 'select-metros-' . $trainee->uniqueId,
+                                'placeholder' => 'Выберите...',
+                            ],
                             'pluginOptions' => [
                                 'allowClear' => true
                             ],
@@ -93,6 +110,9 @@ echo Html::beginTag('div', ['class' => 'row']);
                     ],
                     'passport_type' => [
                         'type' => Form::INPUT_HIDDEN,
+                        'options' => [
+                            'id' => 'trainee-passport-type-' . $trainee->uniqueId,
+                        ],
                     ],
                 ]
             ]);
@@ -137,13 +157,16 @@ echo Form::widget([
     'form' => $form,
     'columns' => 12,
     'compactGrid' => true,
-//    'contentBefore' => Html::tag('legend', Html::tag('small', 'Паспортные данные'), ['class' => 'text-info']),
     'attributes' => [
         'passport_number' => [
             'type' => Form::INPUT_WIDGET,
             'widgetClass' => MaskedInput::class,
             'options' => [
                 'mask' => $trainee->passportMask,
+                'options' => [
+                    'id' => 'trainee-passport-number-' . $trainee->uniqueId,
+                    'class' => 'form-control'
+                ],
                 'clientOptions' => [
                     'clearIncomplete' => $trainee->isRussian(),
                 ],
@@ -159,21 +182,24 @@ echo Form::widget([
                                 'items' => [
                                     ['label' => 'Паспорт РФ', 'url' => '#', 'linkOptions' => [
                                         'onclick' => new JsExpression('
-                                            $("#w4-button").text("Паспорт РФ"); 
-                                            $("#trainee-passport_number").inputmask("9999 999999", { "clearIncomplete": true });
-                                            $("#trainee-passport_type").val(' . Trainee::RUSSIAN_PASSPORT . ');
+                                            $("#trainee-passport-type-button-' . $trainee->uniqueId . '").text("Паспорт РФ"); 
+                                            $("#trainee-passport-number-' . $trainee->uniqueId . '").inputmask("' . Trainee::RUSSIAN_PASSPORT_MASK . '", { "clearIncomplete": true });
+                                            $("#trainee-passport-type-' . $trainee->uniqueId . '").val(' . Trainee::RUSSIAN_PASSPORT . ');
                                         '),
                                     ]],
                                     ['label' => 'Иностранный паспорт', 'url' => '#', 'linkOptions' => [
                                         'onclick' => new JsExpression('
-                                            $("#w4-button").text("Иностранный паспорт");
-                                            $("#trainee-passport_number").inputmask("*{1,100}");
-                                            $("#trainee-passport_type").val(' . Trainee::FOREIGN_PASSPORT . ');
+                                            $("#trainee-passport-type-button-' . $trainee->uniqueId . '").text("Иностранный паспорт");
+                                            $("#trainee-passport-number-' . $trainee->uniqueId . '").inputmask("' . Trainee::FOREIGN_PASSPORT_MASK . '");
+                                            $("#trainee-passport-type-' . $trainee->uniqueId . '").val(' . Trainee::FOREIGN_PASSPORT . ');
                                         '),
                                     ]],
                                 ],
                             ],
-                            'buttonOptions' => ['class' => 'btn-primary'],
+                            'buttonOptions' => [
+                                'id' => 'trainee-passport-type-button-' . $trainee->uniqueId,
+                                'class' => 'btn-primary',
+                            ],
                             'renderContainer' => false,
                         ]),
                         'asButton' => true,
@@ -192,6 +218,7 @@ echo Form::widget([
 //                    'endDate' => '24.02.2019',
                 ],
                 'options' => [
+                    'id' => 'trainee-passport-date-' . $trainee->uniqueId,
                     'autocomplete' => 'off',
                 ],
             ],
@@ -240,7 +267,6 @@ echo Form::widget([
     'form' => $form,
     'columns' => 12,
     'compactGrid' => true,
-//    'contentBefore' => Html::tag('legend', Html::tag('small', 'ЛМК'), ['class' => 'text-info']),
     'attributes' => [
         'medical' => [
             'type' => Form::INPUT_WIDGET,
@@ -253,6 +279,10 @@ echo Form::widget([
                     'onColor' => 'success',
                     'offColor' => 'danger',
                 ],
+                'options' => [
+                    'id' => 'trainee-medical-' . $trainee->uniqueId,
+                ],
+
             ],
             'fieldConfig' => [
                 'labelSpan' => 6,
@@ -266,6 +296,11 @@ echo Form::widget([
                 'mask' => '99.99.9999',
                 'clientOptions' => [
                     'clearIncomplete' => true,
+                ],
+                'options' => [
+                    'id' => 'trainee-medical-date-' . $trainee->uniqueId,
+                    'class' => 'form-control',
+                    'autocomplete' => 'off',
                 ],
             ],
             'fieldConfig' => [
@@ -287,7 +322,6 @@ echo Form::widget([
     'form' => $form,
     'columns' => 12,
     'compactGrid' => true,
-//    'contentBefore' => Html::tag('legend', Html::tag('small', 'Стажировка'), ['class' => 'text-info']),
     'attributes' => [
         'division' => [
             'type' => Form::INPUT_WIDGET,
@@ -295,10 +329,10 @@ echo Form::widget([
             'label' => 'Направлен в ресторан',
             'options' => [
                 'data' => ArrayHelper::map($divisions, 'id', 'name'),
-                'options' => ['placeholder' => 'Выберите...'],
-//                'pluginOptions' => [
-//                    'allowClear' => true
-//                ],
+                'options' => [
+                    'id' => 'trainee-division-' . $trainee->uniqueId,
+                    'placeholder' => 'Выберите...',
+                ],
             ],
             'fieldConfig' => [
                 'labelSpan' => 4,
@@ -316,6 +350,7 @@ echo Form::widget([
                     'autoclose' => true,
                 ],
                 'options' => [
+                    'id' => 'trainee-trainee-date-' . $trainee->uniqueId,
                     'autocomplete' => 'off',
                 ],
             ],

@@ -10,8 +10,8 @@ use app\models\Source;
 use app\models\Metro;
 use app\models\Status;
 
-$id = 'w' . rand(1000, 2000);
-$formId = 'w' . rand(1000, 2000);
+$modalId = 'trainee-modal-' . $trainee->uniqueId;
+$formId = 'trainee-form-' . $trainee->uniqueId;
 
 Modal::begin([
     'size' => Modal::SIZE_LARGE,
@@ -22,7 +22,7 @@ Modal::begin([
     ],
     'options' => [
         'tabindex' => false,
-        'id' => $id,
+        'id' => $modalId,
     ],
     'toggleButton' => [
         'label' => $trainee->fullname,
@@ -33,7 +33,7 @@ Modal::begin([
             'type' => 'button',
             'form' => $formId,
             'class' => 'btn btn-secondary',
-            'onclick' => new \yii\web\JsExpression('$("#' . $id . '").modal("hide")'),
+            'onclick' => new \yii\web\JsExpression('$("#' . $modalId . '").modal("hide")'),
         ]),
         Html::submitButton('Сохранить', [
             'type' => 'button',

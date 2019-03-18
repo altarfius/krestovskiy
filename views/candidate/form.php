@@ -1,6 +1,5 @@
 <?php
 
-use kartik\date\DatePicker;
 use kartik\datetime\DateTimePicker;
 use kartik\depdrop\DepDrop;
 use kartik\form\ActiveForm;
@@ -12,7 +11,7 @@ use kartik\select2\Select2;
 use yii\helpers\ArrayHelper;
 
 $form = ActiveForm::begin([
-    'id' => 'new-candidate-form',
+    'id' => $formId,
     'type' => ActiveForm::TYPE_HORIZONTAL,
     'action' => ['candidate/edit'],
     'fieldConfig' => [
@@ -44,6 +43,9 @@ echo Form::widget([
     'attributes' => [
         'surname' => [
             'type' => Form::INPUT_TEXT,
+            'options' => [
+                'id' => 'candidate-surname-' . $candidate->uniqueId,
+            ],
         ],
         'name' => [
             'type' => Form::INPUT_TEXT,
@@ -64,7 +66,10 @@ echo Form::widget([
             'widgetClass' => Select2::class,
             'options' => [
                 'data' => ArrayHelper::map($nationalities, 'id', 'name'),
-                'options' => ['placeholder' => 'Выберите...'],
+                'options' => [
+                    'id' => 'candidate-nationalities-' . $candidate->uniqueId,
+                    'placeholder' => 'Выберите...',
+                ],
                 'pluginOptions' => [
                     'allowClear' => true
                 ],
@@ -82,11 +87,16 @@ echo Form::widget([
             'widgetClass' => MaskedInput::class,
             'options' => [
                 'mask' => '+7 (999) 999-99-99',
+                'options' => [
+                    'id' => 'candidate-phone-' . $candidate->uniqueId,
+                    'class' => 'form-control'
+                ],
                 'clientOptions' => [
                     'clearIncomplete' => true,
                 ],
             ],
             'fieldConfig' => [
+                'enableAjaxValidation' => true,
                 'addon' => [
                     'prepend' => [
                         'content' => Icon::show('mobile-alt'),
@@ -99,18 +109,11 @@ echo Form::widget([
             'widgetClass' => Select2::class,
             'options' => [
                 'data' => ArrayHelper::map($metros, 'id', 'name'),
-                'options' => ['placeholder' => 'Выберите...'],
+                'options' => [
+                    'id' => 'candidate-metros-' . $candidate->uniqueId,
+                    'placeholder' => 'Выберите...',
+                ],
                 'pluginOptions' => [
-//                    'templateResult' => new JsExpression('function format(state) {
-//                        var lineStyleArray = ' . \yii\helpers\Json::encode(Metro::$lineStyleArray) . ';
-//
-//                        return "<span style=\"color: " + lineStyleArray[state.id] + ";\">" + state.text + "</span>";
-//                    }'),
-//                    'templateSelection' => new JsExpression('function format(state) {
-//                        if (!state.id) return state.text;
-//                        return state.text + "!";
-//                    }'),
-//                    'escapeMarkup' => new JsExpression("function(m) { return m; }"),
                     'allowClear' => true,
                 ],
             ],
@@ -136,7 +139,10 @@ echo Form::widget([
             'widgetClass' => Select2::class,
             'options' => [
                 'data' => ArrayHelper::map($divisionTypes, 'id', 'name'),
-                'options' => ['placeholder' => 'Выберите...'],
+                'options' => [
+                    'id' => 'candidate-types-' . $candidate->uniqueId,
+                    'placeholder' => 'Выберите...',
+                ],
                 'hideSearch' => true,
             ],
         ],
@@ -147,15 +153,17 @@ echo Form::widget([
                 'data' => ArrayHelper::map($divisions, 'id', 'name'),
                 'type' => DepDrop::TYPE_SELECT2,
                 'select2Options' => [
-                    'hideSearch' => true,
                     'pluginOptions' => [
                         'allowClear' => true,
                     ],
                 ],
                 'pluginOptions' => [
-                    'depends' => ['candidate-type'],
+                    'depends' => ['candidate-types-' . $candidate->uniqueId],
                     'placeholder' => 'Выберите...',
                     'url' => Url::to(['division/getdivisionsbytype']),
+                ],
+                'options' => [
+                    'id' => 'candidate-divisions-' . $candidate->uniqueId,
                 ],
             ],
         ],
@@ -172,10 +180,11 @@ echo Form::widget([
             'type' => Form::INPUT_WIDGET,
             'widgetClass' => Select2::class,
             'options' => [
-                'data' => ArrayHelper::map($categories, 'id', 'name', function ($category) {
-                    return $category->categoryType->name;
-                }),
-                'options' => ['placeholder' => 'Выберите...'],
+                'data' => ArrayHelper::map($categories, 'id', 'name', 'categoryType.name'),
+                'options' => [
+                    'id' => 'candidate-categories-' . $candidate->uniqueId,
+                    'placeholder' => 'Выберите...',
+                ],
                 'pluginOptions' => [
                     'allowClear' => true
                 ],
@@ -193,6 +202,7 @@ echo Form::widget([
                     'minuteStep' => 15,
                 ],
                 'options' => [
+                    'id' => 'candidate-interview-datetime-' . $candidate->uniqueId,
                     'autocomplete' => 'off',
                 ],
             ],
@@ -205,7 +215,10 @@ echo Form::widget([
             'widgetClass' => Select2::class,
             'options' => [
                 'data' => ArrayHelper::map($sources, 'id', 'name'),
-                'options' => ['placeholder' => 'Выберите...'],
+                'options' => [
+                    'id' => 'candidate-sources-' . $candidate->uniqueId,
+                    'placeholder' => 'Выберите...',
+                ],
                 'pluginOptions' => [
                     'allowClear' => true
                 ],
@@ -223,7 +236,10 @@ echo Form::widget([
             'widgetClass' => Select2::class,
             'options' => [
                 'data' => ArrayHelper::map($statuses, 'id', 'name'),
-                'options' => ['placeholder' => 'Выберите...'],
+                'options' => [
+                    'id' => 'candidate-statuses-' . $candidate->uniqueId,
+                    'placeholder' => 'Выберите...',
+                ],
                 'hideSearch' => true,
             ],
         ],
