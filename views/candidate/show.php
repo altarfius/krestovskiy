@@ -92,7 +92,6 @@ echo Html::beginTag('div', ['class' => 'row']);
             'showPageSummary' => false,
             'containerOptions' => [
                 'class' => 'mt-2',
-                'style' => 'overflow: auto'
             ],
             'dataProvider'=> $candidateProvider,
             'rowOptions' => function($model) {

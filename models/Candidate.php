@@ -294,6 +294,6 @@ class CandidateQuery extends ActiveQuery
                 ->orWhere(['like', 'patronymic', $query]);
         }
 
-        return $this;
+        return $this->isCandidate();
     }
 }
