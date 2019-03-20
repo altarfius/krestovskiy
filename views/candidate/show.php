@@ -89,8 +89,10 @@ echo Html::beginTag('div', ['class' => 'row']);
             'bordered' => false,
             'condensed' => true,
             'responsive' => false,
+            'showPageSummary' => false,
             'containerOptions' => [
-                'class' => 'mt-2'
+                'class' => 'mt-2',
+                'style' => 'overflow: auto'
             ],
             'dataProvider'=> $candidateProvider,
             'rowOptions' => function($model) {
@@ -123,15 +125,21 @@ echo Html::beginTag('div', ['class' => 'row']);
                             [
                                 'datumTokenizer' => "Bloodhound.tokenizers.obj.whitespace('value')",
                                 'display' => 'value',
+//                                'templates' => [
+//                                    'notFound' => '<div class = "text-danger" style = "padding: 0 8px"> Невозможно найти репозитории для выбранного запроса. </ div>' ,
+//                                    'offertion' => new JsExpression ( 'Handlebars.compile ("<div style=\"color: red;\">{{value}}</div>")' ),
+//                                ],
 //                                'prefetch' => $baseUrl . '/samples/countries.json',
-                            'remote' => [
-                                'url' => Url::to(['candidate/find']) . '&q=%QUERY',
-                                'wildcard' => '%QUERY'
-                            ],
+                                'remote' => [
+                                    'url' => Url::to(['candidate/find']) . '&q=%QUERY',
+                                    'wildcard' => '%QUERY'
+                                ],
                             ]
                         ]
                     ],
                     'filterInputOptions' => ['placeholder' => 'Фильтровать по...'],
+                    'pageSummary' => function ($summary, $data, $widget) { return 'Count is ' . $summary; },
+                    'pageSummaryFunc' => GridView::F_COUNT,
                 ],
                 [
                     'attribute' => 'age',

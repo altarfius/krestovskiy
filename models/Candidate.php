@@ -49,7 +49,7 @@ class Candidate extends ActiveRecord
         return [
             [['surname', 'name', 'gender', 'age', 'phone', 'category', 'source', 'metro', 'call_type', 'status', 'division', 'nationality'], 'required'],
             [['surname', 'name', 'patronymic', 'age'], 'trim'],
-            ['phone', 'validateDuplicate', 'when' => function($candidate) {
+            [['surname', 'name', 'patronymic', 'phone'], 'validateDuplicate', 'when' => function($candidate) {
                 return $candidate->isNewRecord;
             }],
             ['age', 'integer', 'min' => 18, 'max' => 65],
@@ -273,9 +273,27 @@ class CandidateQuery extends ActiveQuery
     }
 
     public function likeFullname($query) {
-        return $this
-            ->where(['like', 'surname', $query])
-            ->orWhere(['like', 'name', $query])
-            ->orWhere(['like', 'patronymic', $query]);
+        $query = trim($query);
+
+        if (substr_count($query, ' ')) {
+            $queryExploded = explode(' ', $query);
+
+            if ($queryExploded[0]) {
+                $this->where(['like', 'surname', $queryExploded[0]]);
+            }
+            if (isset($queryExploded[1])) {
+                $this->andWhere(['like', 'name', $queryExploded[1]]);
+            }
+            if (isset($queryExploded[2])) {
+                $this->andWhere(['like', 'patronymic', $queryExploded[2]]);
+            }
+        } else {
+            $this
+                ->where(['like', 'surname', $query])
+                ->orWhere(['like', 'name', $query])
+                ->orWhere(['like', 'patronymic', $query]);
+        }
+
+        return $this;
     }
 }

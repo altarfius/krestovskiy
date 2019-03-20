@@ -128,6 +128,7 @@ echo Html::beginTag('div', ['class' => 'row']);
                     'filterWidgetOptions' => [
                         'pluginOptions' => [
                             'autoclose' => true,
+                            'todayHighlight' => true,
                         ],
                     ],
                 ]

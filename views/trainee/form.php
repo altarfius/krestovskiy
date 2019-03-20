@@ -215,6 +215,7 @@ echo Form::widget([
                 'removeButton' => false,
                 'pluginOptions' => [
                     'autoclose' => true,
+                    'todayHighlight' => true,
 //                    'endDate' => '24.02.2019',
                 ],
                 'options' => [
@@ -348,6 +349,7 @@ echo Form::widget([
                 'removeButton' => false,
                 'pluginOptions' => [
                     'autoclose' => true,
+                    'todayHighlight' => true,
                 ],
                 'options' => [
                     'id' => 'trainee-trainee-date-' . $trainee->uniqueId,

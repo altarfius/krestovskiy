@@ -13,7 +13,7 @@ use yii\helpers\ArrayHelper;
 $form = ActiveForm::begin([
     'id' => $formId,
     'type' => ActiveForm::TYPE_HORIZONTAL,
-    'action' => ['candidate/edit'],
+    'action' => ['candidate/edit', 'id' => $candidate->id],
     'fieldConfig' => [
         'labelSpan' => 4,
     ],
@@ -199,7 +199,8 @@ echo Form::widget([
                 'pluginOptions' => [
                     'autoclose' => true,
                     'format' => 'dd.mm.yyyy HH:ii',
-                    'minuteStep' => 15,
+                    'minuteStep' => 30,
+                    'todayHighlight' => true,
                 ],
                 'options' => [
                     'id' => 'candidate-interview-datetime-' . $candidate->uniqueId,

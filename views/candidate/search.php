@@ -33,6 +33,7 @@ echo Form::widget([
                 'separator' => '-',
                 'pluginOptions' => [
                     'autoclose' => true,
+                    'todayHighlight' => true,
                 ],
                 'options' => ['autocomplete' => 'off'],
                 'options2' => ['autocomplete' => 'off'],

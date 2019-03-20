@@ -28,9 +28,17 @@ class CandidateSearch extends Candidate
             [['date_from', 'date_to'], 'date'],
             ['fullname', 'filter', 'filter' => function($value) {
                 if (strlen($value) > 0) {
-                    $this->surname = strtok($value, ' ');
-                    $this->name = strtok(' ');
-                    $this->patronymic = strtok(' ');
+                    $names = explode(' ', $value);
+
+                    if (isset($names[0])) {
+                        $this->surname = $names[0];
+                    }
+                    if (isset($names[1])) {
+                        $this->name = $names[1];
+                    }
+                    if (isset($names[2])) {
+                        $this->patronymic = $names[2];
+                    }
                 }
 
                 return $value;
@@ -90,9 +98,9 @@ class CandidateSearch extends Candidate
         $query->andFilterWhere(['metro_id' => $this->metro]);
         $query->andFilterWhere(['status_id' => $this->status]);
         $query->andFilterWhere(['manager_id' => $this->manager]);
-        $query->andFilterWhere(['like', 'employee.surname', $this->surname]);
-        $query->andFilterWhere(['like', 'employee.name', $this->name]);
-        $query->andFilterWhere(['like', 'employee.patronymic', $this->patronymic]);
+        $query->andFilterWhere(['like', 'employee.surname', $this->surname, false, false]);
+        $query->andFilterWhere(['like', 'employee.name', $this->name, false, false]);
+        $query->andFilterWhere(['like', 'employee.patronymic', $this->patronymic, false, false]);
         $query->andFilterWhere(['>=', 'interview_date', Yii::$app->formatter->asDate($this->date_from, 'yyyy-MM-dd')]);
         $query->andFilterWhere(['<=', 'interview_date', Yii::$app->formatter->asDate($this->date_to, 'yyyy-MM-dd')]);
 
