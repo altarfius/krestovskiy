@@ -2,11 +2,10 @@
 
 namespace app\models;
 
-use yii\db\ActiveRecord;
 use yii\db\ActiveQuery;
 use Yii;
 
-class Candidate extends ActiveRecord
+class Candidate extends AbstractModel
 {
     const SCENARIO_NEW = 'scenario_new';
 
@@ -72,10 +71,7 @@ class Candidate extends ActiveRecord
             return false;
         }
 
-        if ($this->status->next_stage == Trainee::STAGE_ID) {
-            $this->is_candidate = 0;
-            $this->is_trainee = 1;
-        }
+
 
         $this->manager_id = Yii::$app->user->id;
 
@@ -93,6 +89,36 @@ class Candidate extends ActiveRecord
         }
 
         return true;
+    }
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+
+        $counterName = null;
+        if ($insert || isset($changedAttributes['status_id'])) {
+            switch ($this->status_id) {
+                case Status::INVITED_INTERVIEW:
+                    $counterName = Job::INVITED_INTERVIEW_COUNTER;
+                    break;
+                case Status::INVITED_TRAINEE:
+                    $counterName = Job::INVITED_TRAINEE_COUNTER;
+                    break;
+                case Status::STAGED:
+                    $counterName = Job::STAGED_COUNTER;
+                    break;
+                case Status::WORKED:
+                    $counterName = Job::WORKED_CONTER;
+                    break;
+            }
+        }
+
+        if ($counterName != null) {
+            $suitableJobs = $this->suitableJobs;
+            array_walk($suitableJobs, function($job) use ($counterName) {
+                $job->updateCounters([$counterName => 1]);
+            });
+        }
     }
 
     public function afterFind()
@@ -177,6 +203,28 @@ class Candidate extends ActiveRecord
         return $this->hasOne(Nationality::class, ['id' => 'nationality_id']);
     }
 
+    public function getJobs()
+    {
+        return $this->hasMany(Job::class, [
+            'division_id' => 'division_id',
+            'category_id' => 'category_id',
+        ]);
+    }
+
+    public function getSuitableJobs() {
+        return $this->getJobs()->afterBeginDate()->isOpen();
+    }
+
+    public function readyNextLevel() {
+        return $this->status->next_stage == Trainee::STAGE_ID;
+    }
+
+    public function convertToTrainee() {
+        $this->is_candidate = 0;
+        $this->is_trainee = 1;
+        $this->is_employee = 0;
+    }
+
     public function getGenderFullText() {
         return $this->gender ? 'Женский' : 'Мужской';
     }
@@ -187,10 +235,6 @@ class Candidate extends ActiveRecord
 
     public function getFullname() {
         return trim($this->surname . ' ' . $this->name . ' ' . $this->patronymic);
-    }
-
-    public function getUniqueId() {
-        return $this->isNewRecord ? 'new' : $this->id;
     }
 
     public function setInterviewDatetime() {

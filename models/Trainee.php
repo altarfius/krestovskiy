@@ -53,6 +53,16 @@ class Trainee extends Candidate
         ]);
     }
 
+    public static function fromCandidate($candidate) {
+        $trainee = new Trainee();
+        $trainee->attributes = $candidate->attributes;
+
+        $trainee->is_candidate = 0;
+        $trainee->is_trainee = 1;
+
+        return $trainee;
+    }
+
     public function beforeSave($insert)
     {
         if (!parent::beforeSave($insert)) {
@@ -85,7 +95,7 @@ class Trainee extends Candidate
             $this->passport_scan_file->saveAs(Yii::getAlias('@webroot/passport/' . $this->passport_scan));
         }
 
-        if ($this->status_id == Status::INVITED && !empty($this->trainee_date)) {
+        if ($this->status_id == Status::INVITED_TRAINEE && !empty($this->trainee_date)) {
             $this->status_id = Status::STAGED;
         }
 
@@ -105,8 +115,6 @@ class Trainee extends Candidate
         $this->passport_date = Yii::$app->formatter->asDate($this->passport_date);
         $this->medical_date = Yii::$app->formatter->asDate($this->medical_date);
         $this->trainee_date = Yii::$app->formatter->asDate($this->trainee_date);
-
-
 
         Yii::$app->session->setFlash('success', 'Стажёр сохранён');
     }

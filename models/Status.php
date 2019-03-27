@@ -13,8 +13,10 @@ use yii\db\ActiveQuery;
 
 class Status extends ActiveRecord
 {
-    const INVITED = 7;
+    const INVITED_INTERVIEW = 1;
+    const INVITED_TRAINEE = 7;
     const STAGED = 13;
+    const WORKED = 19;
 
     public static function find()
     {

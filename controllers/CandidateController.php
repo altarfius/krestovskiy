@@ -4,6 +4,7 @@ namespace app\controllers;
 use app\models\CandidateSearch;
 use app\models\Division;
 use app\models\DivisionType;
+use app\models\Job;
 use app\models\Nationality;
 use app\models\Status;
 use app\models\Trainee;
@@ -78,21 +79,17 @@ class CandidateController extends Controller
         }
 
         if ($candidate->load(Yii::$app->request->post()) && $candidate->save()) {
-            Yii::$app->session->setFlash('success', $candidate->fullname . ' сохранён в кандидаты');
-            return $this->redirect(Yii::$app->request->referrer);
+            if ($candidate->readyNextLevel()) {
+                $candidate->convertToTrainee();
+                if ($candidate->save()) {
+                    return $this->redirect(['trainee/edit', 'id' => $candidate->id]);
+                }
+            } else {
+                Yii::$app->session->setFlash('success', $candidate->fullname . ' сохранён в кандидаты');
+            }
         }
 
-        return $this->render('form', [
-            'formId' => 'candidate-form-' . $candidate->uniqueId,
-            'candidate' => $candidate,
-            'categories' => Category::find()->all(),
-            'sources' => Source::find()->all(),
-            'metros' => Metro::find()->all(),
-            'nationalities' => Nationality::find()->all(),
-            'divisions' => Division::find()->all(),
-            'divisionTypes' => DivisionType::find()->all(),
-            'statuses' => Status::find()->all(),
-        ]);
+        return $this->redirect(Yii::$app->request->referrer);
     }
 
     public function actionFind($q) {
@@ -116,11 +113,17 @@ class CandidateController extends Controller
     public function actionUpdatestatus($id, $statusId)
     {
         $candidate = Candidate::findOne($id);
-
         $candidate->setStatus($statusId);
+
+        if ($candidate->readyNextLevel()) {
+            $candidate->convertToTrainee();
+        }
+
         if ($candidate->save()) {
-            if ($candidate->status->next_stage == Trainee::STAGE_ID) {
+            if ($candidate->is_trainee) {
                 return $this->redirect(['trainee/edit', 'id' => $candidate->id]);
+            } else {
+                Yii::$app->session->setFlash('success', $candidate->fullname . ' сохранён в кандидаты');
             }
         }
 
