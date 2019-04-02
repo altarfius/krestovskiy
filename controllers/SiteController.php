@@ -32,7 +32,7 @@ class SiteController extends Controller
 
     public function actionGeneratehash()
     {
-        $password = 'edolmatova';
+        $password = 'vsenotrusova';
         $hash = \Yii::$app->security->generatePasswordHash($password);
         echo $hash . ' is ' . \Yii::$app->security->validatePassword($password, $hash);
     }

@@ -94,46 +94,37 @@ echo Html::beginTag('div', ['class' => 'row']);
                     'vAlign' => GridView::ALIGN_MIDDLE,
                 ],
                 [
-                    'attribute' => 'count_opened',
-                    'format' => 'raw',
-                    'header' => 'Открыто / Закрыто',
-                    'value' => function($model) {
-                        return $model->count_opened . ' / ' . $model->count_closed;
-                    },
-                    'width' => '150px',
-                    'vAlign' => GridView::ALIGN_MIDDLE,
-                    'pageSummary' => function($summary, $data) {
-                        $count_closed = array_reduce($data, function($carry, $item) {
-                            $carry += intval(substr($item, strpos($item, '/')+1));
-                            return $carry;
-                        }, 0);
-
-                        return $summary . ' / ' . $count_closed;
-                    },
-                ],
-                [
                     'attribute' => 'end_date',
                     'format' => ['date', 'dd MMMM yyyy'],
 //                    'width' => '85px',
                     'vAlign' => GridView::ALIGN_MIDDLE,
                 ],
                 [
+                    'attribute' => 'count_opened',
+//                    'width' => '150px',
+                    'vAlign' => GridView::ALIGN_MIDDLE,
+                    'pageSummary' => true,
+                ],
+                [
                     'attribute' => 'count_assigned_interviews',
-//                    'format' => ['date', 'dd MMMM yyyy'],
 //                    'width' => '85px',
                     'vAlign' => GridView::ALIGN_MIDDLE,
                     'pageSummary' => true,
                 ],
                 [
                     'attribute' => 'count_conducted_interviews',
-//                    'format' => ['date', 'dd MMMM yyyy'],
 //                    'width' => '85px',
                     'vAlign' => GridView::ALIGN_MIDDLE,
                     'pageSummary' => true,
                 ],
                 [
                     'attribute' => 'count_trainees',
-//                    'format' => ['date', 'dd MMMM yyyy'],
+//                    'width' => '85px',
+                    'vAlign' => GridView::ALIGN_MIDDLE,
+                    'pageSummary' => true,
+                ],
+                [
+                    'attribute' => 'count_closed',
 //                    'width' => '85px',
                     'vAlign' => GridView::ALIGN_MIDDLE,
                     'pageSummary' => true,

@@ -71,8 +71,6 @@ class Candidate extends AbstractModel
             return false;
         }
 
-
-
         $this->manager_id = Yii::$app->user->id;
 
         $this->update_user_id = Yii::$app->user->id;
@@ -216,7 +214,7 @@ class Candidate extends AbstractModel
     }
 
     public function readyNextLevel() {
-        return $this->status->next_stage == Trainee::STAGE_ID;
+        return $this->status->stage == Trainee::STAGE_ID;
     }
 
     public function convertToTrainee() {

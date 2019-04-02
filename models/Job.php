@@ -20,7 +20,7 @@ class Job extends AbstractModel
             'create_time' => 'Создан',
             'begin_date' => 'Дата открытия',
             'end_date' => 'Дата закрытия',
-            'count_opened' => 'Количество человек',
+            'count_opened' => 'Открытые',
             'count_closed' => 'Закрытые',
             'count_assigned_interviews' => 'Кол-во собеседований',
             'count_conducted_interviews' => 'Прошли собес',

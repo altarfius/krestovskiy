@@ -61,7 +61,7 @@ class CandidateController extends Controller
             'nationalities' => Nationality::find()->all(),
             'categories' => Category::find()->all(),
             'metros' => Metro::find()->all(),
-            'statuses' => Status::find()->byStage()->all(), //TODO: Резервы не все отображаются при фильтре
+            'statuses' => Status::find()->byStage()->orWhere(['id' => 7])->all(), //TODO: Резервы не все отображаются при фильтре
             'managers' => User::find()->all(),
         ]);
     }
