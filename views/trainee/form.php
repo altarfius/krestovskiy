@@ -207,23 +207,50 @@ echo Form::widget([
                 ],
             ],
         ],
+//        'medical_date' => [
+//            'type' => Form::INPUT_WIDGET,
+//            'widgetClass' => MaskedInput::class,
+//            'options' => [
+//                'mask' => '99.99.9999',
+//                'clientOptions' => [
+//                    'clearIncomplete' => true,
+//                ],
+//                'options' => [
+//                    'id' => 'trainee-medical-date-' . $trainee->uniqueId,
+//                    'class' => 'form-control',
+//                    'autocomplete' => 'off',
+//                ],
+//            ],
+//            'fieldConfig' => [
+//                'addon' => [
+//                    'prepend' => [
+//                        'content' => Icon::show('calendar'),
+//                    ],
+//                ],
+//                'labelSpan' => 5,
+//            ],
+//            'columnOptions' => ['colspan' => 5],
+//        ],
         'passport_date' => [
             'type' => Form::INPUT_WIDGET,
-            'widgetClass' => DatePicker::class,
+            'widgetClass' => MaskedInput::class,
             'options' => [
-                'type' => DatePicker::TYPE_COMPONENT_PREPEND,
-                'removeButton' => false,
-                'pluginOptions' => [
-                    'autoclose' => true,
-                    'todayHighlight' => true,
-//                    'endDate' => '24.02.2019',
+                'mask' => '99.99.9999',
+                'clientOptions' => [
+                    'clearIncomplete' => true,
                 ],
                 'options' => [
                     'id' => 'trainee-passport-date-' . $trainee->uniqueId,
+                    'class' => 'form-control',
                     'autocomplete' => 'off',
                 ],
             ],
             'fieldConfig' => [
+                'addon' => [
+                    'prepend' => [
+                        'content' => Icon::show('calendar'),
+                    ],
+                ],
                 'labelSpan' => 5,
             ],
             'columnOptions' => ['colspan' => 5],

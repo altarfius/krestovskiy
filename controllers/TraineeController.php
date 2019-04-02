@@ -86,7 +86,7 @@ class TraineeController extends Controller
 
         $trainee->setStatus($statusId);
 
-        if ($trainee->save()) {
+        if ($trainee->update(false)) {
             return $this->redirect(Yii::$app->request->referrer);
         } else {
             Yii::debug($trainee->getErrorSummary(true), __METHOD__);

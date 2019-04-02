@@ -120,7 +120,10 @@ echo Html::beginTag('div', ['class' => 'row']);
                 ],
                 [
                     'attribute' => 'trainee_date',
-                    'format' => ['date', 'dd MMMM'],
+//                    'format' => 'raw',
+                    'value' => function($model) {
+                        return $model->trainee_date != null ? Yii::$app->formatter->asDate($model->trainee_date, 'dd MMMM') : '';
+                    },
                     'vAlign' => GridView::ALIGN_MIDDLE,
                     'width' => '170px',
                     'filterType' => GridView::FILTER_DATE,
