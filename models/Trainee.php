@@ -36,7 +36,6 @@ class Trainee extends Candidate
             'photoFile' => 'Фото',
             'medical' => 'ЛМК',
             'medical_date' => 'Действительна до',
-            'trainee_date' => 'Дата начала стажировки'
         ]);
     }
 
@@ -47,9 +46,10 @@ class Trainee extends Candidate
             [['passport_type', 'passport_date', 'passport_issued', 'passport_number'], 'required'],
             [['passport_number', 'passport_issued'], 'trim'],
             [['passport_date', 'medical_date', 'trainee_date'], 'date'],
+//            ['photo', 'image', 'skipOnEmpty' => true],
             ['passport_scan_file', 'image', 'skipOnEmpty' => true],
 //            ['passport_scan', 'file', 'skipOnEmpty' => false, 'extensions' => ['pdf']],
-            [['birthday', 'passport_scan'], 'safe'],
+            [['birthday', 'passport_scan', 'photo'], 'safe'],
         ]);
     }
 
@@ -83,11 +83,12 @@ class Trainee extends Candidate
             $this->is_employee = 1;
         }
 
-//        $this->photo = UploadedFile::getInstance($this, 'photo');
-//        if ($this->photo != null) {
-//            $this->photo->saveAs(Yii::getAlias('@webroot/img/' . $this->photo->name . '.' . $this->photo->extension));
-//
-//        }
+        $this->photo = UploadedFile::getInstance($this, 'photo');
+        if ($this->photo != null) {
+            $extention = $this->photo->extension;
+            $this->photo->name = 'photo-' . $this->id . '.' . $extention;
+            $this->photo->saveAs(Yii::getAlias('@webroot/img/' . $this->photo->name));
+        }
 
         $this->passport_scan_file = UploadedFile::getInstance($this, 'passport_scan_file');
         if ($this->passport_scan_file != null) {
@@ -101,7 +102,7 @@ class Trainee extends Candidate
 
         $this->passport_date = Yii::$app->formatter->asDate($this->passport_date, 'yyyy-MM-dd');
         $this->medical_date = Yii::$app->formatter->asDate($this->medical_date, 'yyyy-MM-dd');
-        $this->trainee_date = Yii::$app->formatter->asDate($this->trainee_date, 'yyyy-MM-dd');
+
 
         Yii::debug($this->attributes, __METHOD__);
 

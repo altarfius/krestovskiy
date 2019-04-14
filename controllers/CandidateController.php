@@ -129,4 +129,42 @@ class CandidateController extends Controller
 
         return $this->redirect(Yii::$app->request->referrer);
     }
+
+    public function actionEdittraineedate() {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+
+        $id = Yii::$app->request->post('editableKey');
+        $index = Yii::$app->request->post('editableIndex');
+
+        $candidate = Candidate::findOne($id);
+
+        $candidate->trainee_date = Yii::$app->request->post('Candidate')[$index]['trainee_date'];
+
+        if ($candidate->update()) {
+            $message = '';
+        } else {
+            $message = $candidate->errors;
+        }
+
+        return ['output' => Yii::$app->formatter->asDate($candidate->trainee_date, 'd MMMM'), 'message' => $message];
+    }
+
+    public function actionEditinterviewdatetime() {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+
+        $id = Yii::$app->request->post('editableKey');
+        $index = Yii::$app->request->post('editableIndex');
+
+        $candidate = Candidate::findOne($id);
+
+        $candidate->interview_datetime = Yii::$app->request->post('Candidate')[$index]['interview_datetime'];
+
+        if ($candidate->update()) {
+            $message = '';
+        } else {
+            $message = $candidate->errors;
+        }
+
+        return ['output' => $candidate->interview_datetime, 'message' => $message];
+    }
 }

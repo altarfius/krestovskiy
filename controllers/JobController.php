@@ -7,8 +7,11 @@ use app\models\JobSearch;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
+use yii\helpers\Html;
+use yii\helpers\VarDumper;
 use yii\web\Controller;
 use yii\web\HttpException;
+use yii\web\Response;
 
 class JobController extends Controller
 {
@@ -34,7 +37,7 @@ class JobController extends Controller
         }
 
         if ($job->load(Yii::$app->request->post()) && $job->save()) {
-            Yii::$app->session->setFlash('success', 'Вакансия добавлена');
+            Yii::$app->session->setFlash('success', 'Вакансия ' . $job->category->name . ' добавлена');
             return $this->redirect(Yii::$app->request->referrer);
         }
 
@@ -66,5 +69,43 @@ class JobController extends Controller
         }
 
         return $this->redirect(Yii::$app->request->referrer);
+    }
+
+    public function actionEditcommentary() {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+
+        $id = Yii::$app->request->post('editableKey');
+        $index = Yii::$app->request->post('editableIndex');
+
+        $job = Job::findOne($id);
+
+        $job->commentary = Yii::$app->request->post('Job')[$index]['commentary'];
+
+        if ($job->update()) {
+            $message = '';
+        } else {
+            $message = $job->errors;
+        }
+
+        return ['output' => $job->commentary, 'message' => $message];
+    }
+
+    public function actionEditenddate() {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+
+        $id = Yii::$app->request->post('editableKey');
+        $index = Yii::$app->request->post('editableIndex');
+
+        $job = Job::findOne($id);
+
+        $job->end_date = Yii::$app->request->post('Job')[$index]['end_date'];
+
+        if ($job->save()) {
+            $message = '';
+        } else {
+            $message = $job->errors;
+        }
+
+        return ['output' => Yii::$app->formatter->asDate($job->end_date, 'd MMMM yyyy'), 'message' => $message];
     }
 }

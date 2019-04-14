@@ -40,4 +40,8 @@ class SiteController extends Controller
     public function actionDate() {
         echo date(\DateTime::ISO8601);
     }
+
+    public function actionTest() {
+        return $this->render('test');
+    }
 }

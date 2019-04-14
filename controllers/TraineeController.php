@@ -12,6 +12,7 @@ use yii\filters\AccessControl;
 use yii\web\Controller;
 use Yii;
 use yii\web\HttpException;
+use yii\web\Response;
 
 class TraineeController extends Controller
 {
@@ -95,5 +96,29 @@ class TraineeController extends Controller
         }
 
         return $this->redirect(Yii::$app->request->referrer);
+    }
+
+    public function actionDeletephoto($traineeId)
+    {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+
+        $trainee = Trainee::findOne($traineeId);
+        if ($trainee == null) {
+            throw new HttpException(400, 'Сотрудник с ID ' . $traineeId . ' не найден');
+        }
+
+        $photoUrlForPhysicalDeleted = Yii::getAlias('@webroot/img/' . $trainee->photo);
+
+        $trainee->photo = null;
+
+        if ($trainee->save() && @unlink($photoUrlForPhysicalDeleted)) {
+            Yii::debug('Фотография сотрудника ' . $traineeId . ' успешно удалена', __METHOD__);
+
+            return true;
+        }
+
+        Yii::debug($trainee->getErrorSummary(true), __METHOD__);
+
+        return $photoUrlForPhysicalDeleted;
     }
 }

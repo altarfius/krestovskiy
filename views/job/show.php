@@ -1,10 +1,14 @@
 <?php
 
+use kartik\date\DatePicker;
+use kartik\editable\Editable;
 use kartik\grid\ActionColumn;
+use kartik\grid\EditableColumn;
 use kartik\grid\GridView;
 use kartik\grid\SerialColumn;
 use kartik\helpers\Html;
 use kartik\icons\Icon;
+use kartik\popover\PopoverX;
 use yii\bootstrap4\Progress;
 use yii\web\JsExpression;
 
@@ -13,29 +17,9 @@ $this->title = 'Вакансии';
 //$this->params['breadcrumbs'][] =  'Персонал';
 //$this->params['breadcrumbs'][] =  $this->title;
 
-echo Html::beginTag('div', ['class' => 'row']);
-
-echo Html::beginTag('div', ['class' => 'col-3']);
-    echo Html::beginTag('div', ['class' => 'row']);
-//        echo $this->render('modal', [
-//            'job' => $job,
-//        ]);
-    echo Html::endTag('div');
-echo Html::endTag('div');
-
-echo Html::beginTag('div', ['class' => 'col-9']);
-    echo Html::beginTag('div', ['class' => 'row float-right']);
-
-    echo Html::endTag('div');
-echo Html::endTag('div');
-
-echo Html::endTag('div');
-
-echo Html::beginTag('div', ['class' => 'row']);
-    echo Html::beginTag('div', ['class' => 'col-12']);
         echo GridView::widget([
             'bordered' => false,
-            'condensed' => true,
+//            'condensed' => true,
             'responsive' => false,
             'rowOptions' => function($model) {
                 return ['class' => $model->styleByCompletion];
@@ -75,7 +59,7 @@ echo Html::beginTag('div', ['class' => 'row']);
                     'value' => function($model) {
                         return $model->category->name;
                     },
-//                    'width' => '45px',
+                    'width' => '210px',
                     'vAlign' => GridView::ALIGN_MIDDLE,
                     'pageSummary' => 'Всего:',
                 ],
@@ -84,63 +68,111 @@ echo Html::beginTag('div', ['class' => 'row']);
                     'value' => function($model) {
                         return $model->division->name;
                     },
-//                    'width' => '45px',
-                    'vAlign' => GridView::ALIGN_MIDDLE,
-                ],
-                [
-                    'attribute' => 'begin_date',
-                    'format' => ['date', 'dd MMMM yyyy'],
-//                    'width' => '85px',
-                    'vAlign' => GridView::ALIGN_MIDDLE,
-                ],
-                [
-                    'attribute' => 'end_date',
-                    'format' => ['date', 'dd MMMM yyyy'],
-//                    'width' => '85px',
+                    'width' => '140px',
                     'vAlign' => GridView::ALIGN_MIDDLE,
                 ],
                 [
                     'attribute' => 'count_opened',
-//                    'width' => '150px',
+                    'width' => '60px',
                     'vAlign' => GridView::ALIGN_MIDDLE,
                     'pageSummary' => true,
                 ],
                 [
+                    'attribute' => 'begin_date',
+                    'format' => ['date', 'd MMMM yyyy'],
+                    'width' => '80px',
+                    'vAlign' => GridView::ALIGN_MIDDLE,
+                ],
+                [
+                    'class' => EditableColumn::class,
+                    'attribute' => 'end_date',
+                    'format' => ['date', 'd MMMM yyyy'],
+                    'width' => '80px',
+                    'vAlign' => GridView::ALIGN_MIDDLE,
+                    'editableOptions'=> function ($model, $key, $index) {
+                        return [
+                            'preHeader' => Icon::show('edit') . ' Редактирование ',
+                            'header' => 'даты закрытия',
+//                            'size' => PopoverX::SIZE_MEDIUM,
+                            'placement' => PopoverX::ALIGN_LEFT,
+                            'valueIfNull' => Html::tag('em', 'Не закрыто'),
+                            'inputType' => Editable::INPUT_WIDGET,
+                            'widgetClass' => DatePicker::class,
+                            'options' => [
+                                'type' => DatePicker::TYPE_INLINE,
+                                'removeButton' => false,
+                                'pluginOptions' => [
+                                    'autoclose' => true,
+                                    'todayHighlight' => true,
+                                    'format' => 'dd.mm.yyyy',
+                                ],
+                                'options' => [
+                                    'id' => 'job-date-opened-' . $model->uniqueId,
+                                    'autocomplete' => 'off',
+                                ],
+                            ],
+                            'formOptions' => [
+                                'action' => ['job/editenddate'],
+                            ],
+                        ];
+                    },
+                ],
+                [
                     'attribute' => 'count_assigned_interviews',
-//                    'width' => '85px',
+                    'width' => '110px',
                     'vAlign' => GridView::ALIGN_MIDDLE,
                     'pageSummary' => true,
                 ],
                 [
                     'attribute' => 'count_conducted_interviews',
-//                    'width' => '85px',
+                    'width' => '110px',
                     'vAlign' => GridView::ALIGN_MIDDLE,
                     'pageSummary' => true,
                 ],
                 [
                     'attribute' => 'count_trainees',
-//                    'width' => '85px',
+                    'width' => '110px',
                     'vAlign' => GridView::ALIGN_MIDDLE,
                     'pageSummary' => true,
                 ],
                 [
                     'attribute' => 'count_closed',
-//                    'width' => '85px',
+                    'width' => '80px',
                     'vAlign' => GridView::ALIGN_MIDDLE,
                     'pageSummary' => true,
                 ],
                 [
-                    'class' => ActionColumn::class,
-                    'template' => '{closed}',
-                    'buttons' => [
-                        'closed' => function($url, $model) {
-                            return Html::a(Icon::show('thumbs-up'), ['job/close', 'id' => $model->id], [
-                                'class' => 'btn btn-success',
-                            ]);
-                        },
-                    ],
-                ]
+                    'class' => EditableColumn::class,
+                    'attribute' => 'commentary',
+                    'vAlign' => GridView::ALIGN_MIDDLE,
+                    'editableOptions'=> function ($model, $key, $index) {
+                        return [
+                            'preHeader' => Icon::show('edit') . ' Редактирование ',
+                            'header' => 'комментария',
+                            'size' => PopoverX::SIZE_MEDIUM,
+                            'placement' => PopoverX::ALIGN_LEFT,
+                            'valueIfNull' => Html::tag('em', 'Отсутствует'),
+                            'inputType' => Editable::INPUT_TEXTAREA,
+                            'options' => [
+                                'rows' => 4,
+                                'style' => 'resize: none;',
+                            ],
+                            'formOptions' => [
+                                'action' => ['job/editcommentary'],
+                            ],
+                        ];
+                    },
+                ],
+//                [
+//                    'class' => ActionColumn::class,
+//                    'template' => '{closed}',
+//                    'buttons' => [
+//                        'closed' => function($url, $model) {
+//                            return Html::a(Icon::show('thumbs-up'), ['job/close', 'id' => $model->id], [
+//                                'class' => 'btn btn-success',
+//                            ]);
+//                        },
+//                    ],
+//                ]
             ],
         ]);
-    echo Html::endTag('div');
-echo Html::endTag('div');

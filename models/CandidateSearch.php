@@ -25,7 +25,7 @@ class CandidateSearch extends Candidate
     public function rules()
     {
         return [
-            [['date_from', 'date_to'], 'date'],
+            [['date_from', 'date_to', 'trainee_date'], 'date'],
             ['fullname', 'filter', 'filter' => function($value) {
                 if (strlen($value) > 0) {
                     $names = explode(' ', $value);
@@ -43,7 +43,10 @@ class CandidateSearch extends Candidate
 
                 return $value;
             }],
-            [['nationality', 'category', 'metro', 'status', 'manager'], 'safe'],
+            [['nationality', 'category', 'metro', 'status', 'manager', 'interview_datetime'], 'safe'],
+//            ['interview_datetime', 'filter', 'filter' => function($value) {
+//                return Yii::$app->formatter->asDatetime($value, 'yyyy-MM-dd HH:mm');
+//            }, 'skipOnEmpty' => true],
         ];
     }
 
@@ -55,7 +58,8 @@ class CandidateSearch extends Candidate
             'query' => $query,
             'sort' => [
                 'attributes' => [
-                    'interview_date',
+                    'interview_datetime',
+                    'trainee_date',
                     'fullname' => [
                         'asc' => ['employee.surname' => SORT_ASC, 'employee.name' => SORT_ASC, 'employee.patronymic' => SORT_ASC],
                         'desc' => ['employee.surnname' => SORT_DESC, 'employee.name' => SORT_ASC, 'employee.patronymic' => SORT_ASC],
@@ -103,6 +107,9 @@ class CandidateSearch extends Candidate
         $query->andFilterWhere(['like', 'employee.patronymic', $this->patronymic, false, false]);
         $query->andFilterWhere(['>=', 'interview_date', Yii::$app->formatter->asDate($this->date_from, 'yyyy-MM-dd')]);
         $query->andFilterWhere(['<=', 'interview_date', Yii::$app->formatter->asDate($this->date_to, 'yyyy-MM-dd')]);
+        $query->andFilterWhere(['=', 'trainee_date', $this->trainee_date ? Yii::$app->formatter->asDate($this->trainee_date, 'yyyy-MM-dd') : $this->trainee_date]);
+        $query->andFilterWhere(['=', 'interview_date', $this->interview_datetime ? Yii::$app->formatter->asDate($this->interview_datetime, 'yyyy-MM-dd') : $this->interview_datetime]);
+        $query->andFilterWhere(['=', 'interview_time', $this->interview_datetime ? Yii::$app->formatter->asTime($this->interview_datetime) : $this->interview_datetime]);
 
         return $dataProvider;
     }

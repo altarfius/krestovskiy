@@ -1,10 +1,15 @@
 <?php
 
+use kartik\date\DatePicker;
+use kartik\datetime\DateTimePicker;
+use kartik\editable\Editable;
+use kartik\grid\EditableColumn;
 use kartik\grid\GridView;
 use kartik\grid\SerialColumn;
 use kartik\helpers\Html;
 use kartik\bs4dropdown\ButtonDropdown;
 use kartik\icons\Icon;
+use kartik\popover\PopoverX;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 
@@ -111,11 +116,24 @@ echo Html::beginTag('div', ['class' => 'row']);
                     'attribute' => 'fullname',
                     'format' => 'raw',
                     'value' => function($model) {
-                        return $this->render('modal', [
-                            'candidate' => $model,
+//                        return $this->render('modal', [
+//                            'candidate' => $model,
+//                        ]);
+                        return PopoverX::widget([
+                            'header' => false,
+                            'closeButton' => false,
+                            'placement' => PopoverX::ALIGN_RIGHT,
+                            'content' => $this->render('detailView', [
+                                'candidate' => $model,
+                            ]),
+//                            'footer' => Html::button('Submit', ['class'=>'btn btn-sm btn-primary']),
+                            'toggleButton' => ['label'=>$model->fullname, 'class'=>'btn btn-link'],
+                            'pluginOptions' => [
+                                'trigger' => 'hover',
+                            ],
                         ]);
                     },
-                    'width' => '203px',
+                    'width' => '265px',
                     'vAlign' => GridView::ALIGN_MIDDLE,
                     'filterType' => GridView::FILTER_TYPEAHEAD,
                     'filterWidgetOptions' => [
@@ -140,36 +158,37 @@ echo Html::beginTag('div', ['class' => 'row']);
                     'pageSummary' => function ($summary, $data, $widget) { return 'Count is ' . $summary; },
                     'pageSummaryFunc' => GridView::F_COUNT,
                 ],
-                [
-                    'attribute' => 'age',
-                    'width' => '45px',
-                    'vAlign' => GridView::ALIGN_MIDDLE,
-                ],
+//                [
+//                    'attribute' => 'age',
+//                    'width' => '45px',
+//                    'vAlign' => GridView::ALIGN_MIDDLE,
+//                ],
                 [
                     'attribute' => 'phone',
                     'width' => '90px',
                     'vAlign' => GridView::ALIGN_MIDDLE,
+//                    'filterType' => GridView::FILTE
                 ],
-                [
-                    'attribute' => 'nationality',
-                    'value' => function($model) {
-                        return $model->nationality->name;
-                    },
-                    'width' => '105px',
-                    'vAlign' => GridView::ALIGN_MIDDLE,
-                    'filterType' => GridView::FILTER_SELECT2,
-                    'filter' => ArrayHelper::map($nationalities, 'id', 'name'),
-                    'filterWidgetOptions' => [
-                        'pluginOptions' => ['allowClear' => true],
-                    ],
-                    'filterInputOptions' => ['placeholder' => 'Фильтровать по...'],
-                ],
+//                [
+//                    'attribute' => 'nationality',
+//                    'value' => function($model) {
+//                        return $model->nationality->name;
+//                    },
+//                    'width' => '105px',
+//                    'vAlign' => GridView::ALIGN_MIDDLE,
+//                    'filterType' => GridView::FILTER_SELECT2,
+//                    'filter' => ArrayHelper::map($nationalities, 'id', 'name'),
+//                    'filterWidgetOptions' => [
+//                        'pluginOptions' => ['allowClear' => true],
+//                    ],
+//                    'filterInputOptions' => ['placeholder' => 'Фильтровать по...'],
+//                ],
                 [
                     'attribute' => 'category',
                     'value' => function($model) {
                         return $model->category->name;
                     },
-                    'width' => '200px',
+                    'width' => '250px',
                     'vAlign' => GridView::ALIGN_MIDDLE,
                     'filterType' => GridView::FILTER_SELECT2,
                     'filter' => ArrayHelper::map($categories, 'id', 'name', 'categoryType.name'),
@@ -178,21 +197,21 @@ echo Html::beginTag('div', ['class' => 'row']);
                     ],
                     'filterInputOptions' => ['placeholder' => 'Фильтровать по...'],
                 ],
-                [
-                    'attribute' => 'metro',
-                    'format' => 'raw',
-                    'width' => '160px',
-                    'value' => function($model) {
-                        return $model->metro->renderNameWithImg();
-                    },
-                    'vAlign' => GridView::ALIGN_MIDDLE,
-                    'filterType' => GridView::FILTER_SELECT2,
-                    'filter' => ArrayHelper::map($metros, 'id', 'name'),
-                    'filterWidgetOptions' => [
-                        'pluginOptions' => ['allowClear' => true],
-                    ],
-                    'filterInputOptions' => ['placeholder' => 'Фильтровать по...'],
-                ],
+//                [
+//                    'attribute' => 'metro',
+//                    'format' => 'raw',
+//                    'width' => '160px',
+//                    'value' => function($model) {
+//                        return $model->metro->renderNameWithImg();
+//                    },
+//                    'vAlign' => GridView::ALIGN_MIDDLE,
+//                    'filterType' => GridView::FILTER_SELECT2,
+//                    'filter' => ArrayHelper::map($metros, 'id', 'name'),
+//                    'filterWidgetOptions' => [
+//                        'pluginOptions' => ['allowClear' => true],
+//                    ],
+//                    'filterInputOptions' => ['placeholder' => 'Фильтровать по...'],
+//                ],
                 [
                     'attribute' => 'status',
                     'format' => 'raw',
@@ -216,17 +235,129 @@ echo Html::beginTag('div', ['class' => 'row']);
                     ],
                     'filterInputOptions' => ['placeholder' => 'Фильтровать по...'],
                 ],
+//                [
+//                    'attribute' => 'interview_datetime',
+//                    'value' => function($model) {
+//                        $format = 'dd MMMM';
+//                        if ($model->interview_time != null) {
+//                            $format .= ' в HH:mm';
+//                        }
+//                        return Yii::$app->formatter->asDatetime($model->interview_datetime, $format);
+//                    },
+//                    'width' => '100px',
+//                    'vAlign' => GridView::ALIGN_MIDDLE,
+//                ],
                 [
+                    'class' => EditableColumn::class,
                     'attribute' => 'interview_datetime',
-                    'value' => function($model) {
-                        $format = 'dd MMMM';
-                        if ($model->interview_time != null) {
-                            $format .= ' в HH:mm';
-                        }
-                        return Yii::$app->formatter->asDatetime($model->interview_datetime, $format);
-                    },
-                    'width' => '100px',
+                    'format' => ['datetime', 'd MMMM в HH:mm'],
+                    'width' => '175px',
                     'vAlign' => GridView::ALIGN_MIDDLE,
+                    'filterType' => GridView::FILTER_DATETIME,
+                    'filterWidgetOptions' => [
+                        'pluginOptions' => [
+                            'autoclose' => true,
+                            'todayHighlight' => true,
+                        ],
+                            'type' => DateTimePicker::TYPE_COMPONENT_PREPEND,
+                            'pluginOptions' => [
+                                'autoclose' => true,
+                                'format' => 'dd.mm.yyyy HH:ii',
+                                'minuteStep' => 30,
+                                'todayHighlight' => true,
+                            ],
+                            'options' => [
+//                                'id' => 'candidate-interview-datetime-' . $model->uniqueId,
+                                'autocomplete' => 'off',
+                            ],
+                    ],
+                    'editableOptions' => function ($model) {
+                        return [
+                            'widgetClass' => DateTimePicker::class,
+                            'inputType' => Editable::INPUT_WIDGET,
+                            'preHeader' => '',
+                            'header' => 'Время собеседования',
+                            'placement' => PopoverX::ALIGN_LEFT,
+                            'valueIfNull' => Html::tag('em', 'Не назначено'),
+                            'showButtonLabels' => true,
+//                            'editableValueOptions' => ['disabled' => 'disabled'],
+                            'submitButton' => [
+                                'icon' => false,
+                                'label' => 'Сохранить',
+                                'class' => 'btn btn-sm btn-primary'
+                            ],
+                            'resetButton' => [
+                                'icon' => false,
+                            ],
+                            'options' => [
+                                'type' => DateTimePicker::TYPE_INLINE,
+                                'removeButton' => false,
+                                'pluginOptions' => [
+                                    'autoclose' => true,
+                                    'format' => 'dd.mm.yyyy HH:ii',
+                                    'minuteStep' => 30,
+                                    'todayHighlight' => true,
+                                ],
+                                'options' => [
+                                    'id' => 'candidate-interview-datetime-' . $model->uniqueId,
+                                    'autocomplete' => 'off',
+                                ],
+                            ],
+                            'formOptions' => [
+                                'action' => ['candidate/editinterviewdatetime'],
+                            ],
+                        ];
+                    },
+                ],
+                [
+                    'class' => EditableColumn::class,
+                    'attribute' => 'trainee_date',
+                    'format' => ['date', 'd MMMM'],
+                    'width' => '145px',
+                    'vAlign' => GridView::ALIGN_MIDDLE,
+                    'filterType' => GridView::FILTER_DATE,
+                    'filterWidgetOptions' => [
+                        'pluginOptions' => [
+                            'autoclose' => true,
+                            'todayHighlight' => true,
+                        ],
+                    ],
+                    'editableOptions' => function ($model) {
+                        return [
+                            'widgetClass' => DatePicker::class,
+                            'inputType' => Editable::INPUT_WIDGET,
+                            'preHeader' => '',
+                            'header' => 'Дата начала стажировки',
+                            'placement' => PopoverX::ALIGN_LEFT,
+                            'valueIfNull' => Html::tag('em', 'Не назначено'),
+                            'showButtonLabels' => true,
+//                            'editableValueOptions' => ['disabled' => 'disabled'],
+                            'submitButton' => [
+                                'icon' => false,
+                                'label' => 'Сохранить',
+                                'class' => 'btn btn-sm btn-primary'
+                            ],
+                            'resetButton' => [
+                                'icon' => false,
+                            ],
+                            'options' => [
+                                'type' => DatePicker::TYPE_INLINE,
+                                'removeButton' => false,
+                                'pluginOptions' => [
+                                    'autoclose' => true,
+                                    'todayHighlight' => true,
+                                    'format' => 'dd.mm.yyyy',
+                                ],
+                                'options' => [
+                                    'id' => 'edit-trainee-date-' . $model->uniqueId,
+                                    'autocomplete' => 'off',
+                                ],
+                            ],
+                            'formOptions' => [
+                                'action' => ['candidate/edittraineedate'],
+                            ],
+                        ];
+                    },
                 ],
                 [
                     'attribute' => 'manager',
@@ -238,13 +369,20 @@ echo Html::beginTag('div', ['class' => 'row']);
                     'filterType' => GridView::FILTER_SELECT2,
                     'filter' => ArrayHelper::map($managers, 'id', 'initials'),
                     'filterWidgetOptions' => [
-                        'pluginOptions' => ['allowClear' => true],
+                        'pluginOptions' => [
+                            'allowClear' => true,
+                            'autoclose' => true,
+                            'todayHighlight' => true,
+                        ],
+                        'options' => [
+                            'autocomplete' => 'off',
+                        ],
                     ],
                     'filterInputOptions' => ['placeholder' => 'Фильтровать по...'],
                 ],
                 [
                     'attribute' => 'create_time',
-                    'format' => ['date', 'dd MMMM в HH:mm'],
+                    'format' => ['date', 'd MMMM в HH:mm'],
                     'width' => '85px',
                     'vAlign' => GridView::ALIGN_MIDDLE,
                 ],

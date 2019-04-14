@@ -17,14 +17,11 @@ Modal::begin([
     'title' => Icon::show('user') . ' Новый стажёр',
     'clientOptions' => [
         'show' => true,
-        'keyboard' => false,
         'focus' => true,
-        'backdrop' => 'static',
     ],
     'options' => [
         'tabindex' => false,
     ],
-    'closeButton' => false,
     'footer' => join('', [
         Html::resetButton('Закрыть', [
             'type' => 'button',

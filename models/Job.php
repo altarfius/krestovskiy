@@ -25,6 +25,7 @@ class Job extends AbstractModel
             'count_assigned_interviews' => 'Кол-во собеседований',
             'count_conducted_interviews' => 'Прошли собес',
             'count_trainees' => 'На стажировке',
+            'commentary' => 'Комментарий',
         ];
     }
 
@@ -32,11 +33,12 @@ class Job extends AbstractModel
     {
         return [
             [['division', 'category', 'begin_date'], 'required'],
-            ['begin_date', 'date'],
+            [['begin_date', 'end_date'], 'date'],
             [['count_opened'], 'default', 'value' => 1],
             [['division'], 'existsSimilarValidate', 'when' => function($job) {
                 return $job->isNewRecord;
             }],
+            ['commentary', 'trim'],
         ];
     }
 
@@ -77,6 +79,7 @@ class Job extends AbstractModel
         }
 
         $this->begin_date = Yii::$app->formatter->asDate($this->begin_date, 'yyyy-MM-dd');
+        $this->end_date = Yii::$app->formatter->asDate($this->end_date, 'yyyy-MM-dd');
 
         if ($insert) {
             $this->create_user_id = Yii::$app->user->id;
@@ -91,6 +94,7 @@ class Job extends AbstractModel
         parent::afterSave($insert, $changedAttributes);
 
         $this->begin_date = Yii::$app->formatter->asDate($this->begin_date);
+        $this->end_date = Yii::$app->formatter->asDate($this->end_date);
     }
 
     public static function find()
@@ -103,10 +107,11 @@ class Job extends AbstractModel
         parent::afterFind();
 
         $this->begin_date = Yii::$app->formatter->asDate($this->begin_date);
+        $this->end_date = Yii::$app->formatter->asDate($this->end_date);
     }
 
     public function existsSimilarValidate($attribute) {
-        if (self::find()->byDivision($this->division)->byCategory($this->category)->isOpen()->exists()) {
+        if (self::find()->byDivision($this->division_id)->byCategory($this->category_id)->isOpen()->exists()) {
             $this->addError($attribute, 'Уже есть открытая вакансия ' . $this->category->name . ' в ' . $this->division->name);
         }
     }

@@ -39,6 +39,7 @@ class Candidate extends AbstractModel
             'fullname' => 'Ф.И.О.',
             'manager' => 'Менеджер',
             'interview_datetime' => 'Время собеседования',
+            'trainee_date' => 'Дата начала стажировки',
             'create_time' => 'Создан',
         ];
     }
@@ -81,6 +82,10 @@ class Candidate extends AbstractModel
             $this->interview_time = Yii::$app->formatter->asTime($this->interview_datetime);
         }
 
+        if ($this->trainee_date != null) {
+            $this->trainee_date = Yii::$app->formatter->asDate($this->trainee_date, 'yyyy-MM-dd');
+        }
+
         if ($insert) {
             $this->create_user_id = $this->update_user_id;
             $this->create_time = $this->update_time;
@@ -93,6 +98,7 @@ class Candidate extends AbstractModel
     {
         parent::afterSave($insert, $changedAttributes);
 
+        //TODO: Почитать про event`ы
         $counterName = null;
         if ($insert || isset($changedAttributes['status_id'])) {
             switch ($this->status_id) {
@@ -117,6 +123,8 @@ class Candidate extends AbstractModel
                 $job->updateCounters([$counterName => 1]);
             });
         }
+
+        $this->interview_datetime = Yii::$app->formatter->asDate($this->interview_datetime, 'd MMMM в HH:mm');
     }
 
     public function afterFind()
@@ -258,20 +266,6 @@ class Candidate extends AbstractModel
             return [
                 'label' => $status->name,
                 'url' => ['candidate/updatestatus', 'id' => $this->id, 'statusId' => $status->id],
-//                'url' => '#',
-//                'linkOptions' => [
-//                    'class' => 'text-' . $status->style,
-//                    'onclick' => new JsExpression('jQuery.get(
-//                        "' . Url::to(['candidate/updatestatus', 'id' => $this->id, 'statusId' => $status->id]) . '",
-//                        {},
-//                        function(data, textStatus) {
-//                            if (textStatus == "success") {
-//                                alert($(this).parents("td").attr());
-//
-//                            }
-//                        }
-//                    )'),
-//                ]
             ];
         }, Status::find()->byStage($this->status->next_stage)->all());
     }

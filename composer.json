@@ -37,7 +37,9 @@
         "kartik-v/yii2-widget-datetimepicker": "dev-master",
         "kartik-v/yii2-widget-typeahead": "1.0.x-dev",
         "kartik-v/yii2-widget-touchspin": "v1.2.3",
-        "kartik-v/yii2-editable": "1.7.x-dev"
+        "kartik-v/yii2-editable": "1.7.x-dev",
+        "kartik-v/yii2-popover-x": "dev-master",
+        "kartik-v/yii2-detail-view": "dev-master"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

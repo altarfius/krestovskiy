@@ -137,6 +137,13 @@ echo Form::widget([
                 ]
             ],
         ],
+        'commentary' => [
+            'type' => Form::INPUT_TEXTAREA,
+            'options' => [
+                'rows' => 4,
+                'style' => 'resize: none;',
+            ],
+        ],
     ],
 ]);
 

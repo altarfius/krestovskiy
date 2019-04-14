@@ -7,6 +7,7 @@ use kartik\file\FileInput;
 use kartik\icons\Icon;
 use kartik\bs4dropdown\ButtonDropdown;
 use kartik\switchinput\SwitchInput;
+use yii\helpers\Url;
 use yii\widgets\MaskedInput;
 use kartik\select2\Select2;
 use yii\helpers\ArrayHelper;
@@ -21,37 +22,71 @@ $form = ActiveForm::begin([
 ]);
 
 echo Html::beginTag('div', ['class' => 'row']);
-    echo Html::beginTag('div', ['class' => 'col-5']);
-//        echo Html::img('img/test.jpg', ['class' => 'img-thumbnail', 'style' => 'height: 300px;']);
-//        echo Form::widget([
-//            'model' => $trainee,
-//            'form' => $form,
-//            'columns' => 1,
-//            'compactGrid' => true,
-//            'attributes' => [
-//                'photo' => [
-//                    'label' => false,
-//                    'type' => Form::INPUT_WIDGET,
-//                    'widgetClass' => FileInput::class,
-//                    'options' => [
-//                        'pluginOptions' => [
-//                            'required' => true,
-//                            'showCaption' => false,
-//                            'showRemove' => false,
-//                            'showUpload' => false,
-//                            'hideThumbnailContent' => !boolval($trainee->photo),
-//                            'browseClass' => 'btn btn-primary btn-block',
-//                            'browseIcon' => Icon::show('camera'),
-//                            'browseLabel' =>  'Загрузить фото'
-//                        ],
-//                        'options' => ['accept' => 'image/*']
-//                    ],
-//                ],
-//            ]
-//        ]);
+    echo Html::beginTag('div', ['class' => 'col-6']);
+        echo Form::widget([
+            'model' => $trainee,
+            'form' => $form,
+            'columns' => 1,
+            'compactGrid' => true,
+            'attributes' => [
+                'photo' => [
+                    'label' => false,
+                    'type' => Form::INPUT_WIDGET,
+                    'widgetClass' => FileInput::class,
+                    'container' => [
+                        'id' => 'trainee-photo-container-' . $trainee->uniqueId,
+                        'style' => boolval($trainee->photo) ? 'display: none;' : '',
+                    ],
+                    'options' => [
+                        'pluginOptions' => [
+                            'showCaption' => false,
+                            'showRemove' => false,
+                            'showUpload' => false,
+                            'browseClass' => 'btn btn-primary btn-block',
+                            'browseIcon' => Icon::show('camera'),
+                            'browseLabel' =>  'Загрузить фото',
+                            'maxFileSize' => 20000,
+                        ],
+                        'options' => ['
+                            accept' => 'image/*',
+                            'id' => 'trainee-photo-'.$trainee->uniqueId,
+                        ],
+                    ],
+                ],
+                'photoView' => [
+                    'label' => false,
+                    'type' => Form::INPUT_STATIC,
+                    'container' => [
+                        'id' => 'trainee-photo-view-container-' . $trainee->uniqueId,
+                    ],
+                    'staticValue' => function($model) {
+                        return
+                            Html::img(Yii::getAlias('@web/img/' . $model->photo), ['class' => 'img-fluid img-thumbnail']) .
+                            Html::button('Удалить', [
+                                'class' => 'btn btn-primary btn-block mt-2',
+                                'onclick' => new JsExpression('
+                                    jQuery.get("'
+                                        . Url::to(['trainee/deletephoto', 'traineeId' => $model->id]) . '",
+                                        {},
+                                        function(data, textStatus) {
+                                            if (textStatus == "success") {
+                                                $("#trainee-photo-container-' . $model->uniqueId . '").removeAttr("style"); //Надо добавить класс и его убивать
+                                                $("#trainee-photo-view-container-' . $model->uniqueId . '").css("display", "none");
+                                            }
+                                        },
+                                        "json"' .
+                                    ');
+                                '),
+                        ]);
+
+                    },
+                    'visible' => boolval($trainee->photo),
+                ],
+            ]
+        ]);
 
     echo Html::endTag('div');
-    echo Html::beginTag('div', ['class' => 'col-7']);
+    echo Html::beginTag('div', ['class' => 'col-6']);
 
             echo Form::widget([
                 'model' => $trainee,
