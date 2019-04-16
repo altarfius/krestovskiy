@@ -42,14 +42,14 @@ class Trainee extends Candidate
     public function rules()
     {
         return array_merge(parent::rules(), [
-            ['passport_type', 'default', 'value' => self::RUSSIAN_PASSPORT],
-            [['passport_type', 'passport_date', 'passport_issued', 'passport_number'], 'required'],
+//            ['passport_type', 'default', 'value' => self::RUSSIAN_PASSPORT],
+//            [[], 'required'],
             [['passport_number', 'passport_issued'], 'trim'],
             [['passport_date', 'medical_date', 'trainee_date'], 'date'],
 //            ['photo', 'image', 'skipOnEmpty' => true],
             ['passport_scan_file', 'image', 'skipOnEmpty' => true],
 //            ['passport_scan', 'file', 'skipOnEmpty' => false, 'extensions' => ['pdf']],
-            [['birthday', 'passport_scan', 'photo'], 'safe'],
+            [['birthday', 'passport_scan', 'photo', 'passport_type', 'passport_date', 'passport_issued', 'passport_number'], 'safe'],
         ]);
     }
 
