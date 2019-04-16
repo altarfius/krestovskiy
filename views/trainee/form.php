@@ -1,6 +1,7 @@
 <?php
 
 use kartik\date\DatePicker;
+use kartik\depdrop\DepDrop;
 use kartik\form\ActiveForm;
 use kartik\builder\Form;
 use kartik\file\FileInput;
@@ -186,6 +187,62 @@ echo Html::endTag('div');
 //        'columnOptions' => ['colspan' => 12],
 //    ];
 //}
+
+echo Form::widget([
+    'model' => $trainee,
+    'form' => $form,
+    'columns' => 2,
+    'compactGrid' => true,
+    'attributes' => [
+        'type' => [
+            'type' => Form::INPUT_WIDGET,
+            'widgetClass' => Select2::class,
+            'options' => [
+                'data' => ArrayHelper::map($divisionTypes, 'id', 'name'),
+                'options' => [
+                    'id' => 'trainee-types-' . $trainee->uniqueId,
+                    'placeholder' => 'Выберите...',
+                ],
+                'hideSearch' => true,
+            ],
+        ],
+        'division' => [
+            'type' => Form::INPUT_WIDGET,
+            'widgetClass' => DepDrop::class,
+            'options' => [
+                'data' => ArrayHelper::map($divisions, 'id', 'name'),
+                'type' => DepDrop::TYPE_SELECT2,
+                'select2Options' => [
+                    'pluginOptions' => [
+                        'allowClear' => true,
+                    ],
+                ],
+                'pluginOptions' => [
+                    'depends' => ['trainee-types-' . $trainee->uniqueId],
+                    'placeholder' => 'Выберите...',
+                    'url' => Url::to(['division/getdivisionsbytype']),
+                ],
+                'options' => [
+                    'id' => 'trainee-divisions-' . $trainee->uniqueId,
+                ],
+            ],
+        ],
+        'category' => [
+            'type' => Form::INPUT_WIDGET,
+            'widgetClass' => Select2::class,
+            'options' => [
+                'data' => ArrayHelper::map($categories, 'id', 'name', 'categoryType.name'),
+                'options' => [
+                    'id' => 'trainee-categories-' . $trainee->uniqueId,
+                    'placeholder' => 'Выберите...',
+                ],
+                'pluginOptions' => [
+                    'allowClear' => true
+                ],
+            ],
+        ],
+    ],
+]);
 
 echo Form::widget([
     'model' => $trainee,

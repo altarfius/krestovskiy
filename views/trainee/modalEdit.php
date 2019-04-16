@@ -1,6 +1,7 @@
 <?php
 
 use app\models\Division;
+use app\models\DivisionType;
 use kartik\icons\Icon;
 use kartik\helpers\Html;
 use yii\bootstrap4\Modal;
@@ -49,6 +50,7 @@ Modal::begin([
         'sources' => Source::find()->all(),
         'metros' => Metro::find()->all(),
         'statuses' => Status::find()->byStage(Trainee::STAGE_ID)->all(),
-        'divisions' => Division::find()->all(),
+        'divisions' => Division::find()->byType($trainee->division->division_type_id)->all(),
+        'divisionTypes' => DivisionType::find()->all(),
     ]);
 Modal::end();
