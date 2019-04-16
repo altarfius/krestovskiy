@@ -22,10 +22,7 @@ Modal::begin([
         'tabindex' => false,
         'id' => $modalId,
     ],
-    'toggleButton' => $candidate->isNewRecord ? false : [
-        'label' => $candidate->fullname,
-        'class' => 'btn btn-link',
-    ],
+    'toggleButton' => false,
     'footer' => join('', [
         Html::resetButton('Закрыть', [
             'type' => 'button',

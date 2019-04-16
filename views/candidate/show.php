@@ -12,6 +12,7 @@ use kartik\icons\Icon;
 use kartik\popover\PopoverX;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
+use yii\web\JsExpression;
 
 $this->title = 'Кандидаты';
 
@@ -116,18 +117,23 @@ echo Html::beginTag('div', ['class' => 'row']);
                     'attribute' => 'fullname',
                     'format' => 'raw',
                     'value' => function($model) {
-//                        return $this->render('modal', [
-//                            'candidate' => $model,
-//                        ]);
-                        return PopoverX::widget([
+                        return $this->render('modal', [
+                            'candidate' => $model,
+                        ]) .
+                        PopoverX::widget([
                             'header' => false,
                             'closeButton' => false,
                             'placement' => PopoverX::ALIGN_RIGHT,
                             'content' => $this->render('detailView', [
                                 'candidate' => $model,
                             ]),
-//                            'footer' => Html::button('Submit', ['class'=>'btn btn-sm btn-primary']),
-                            'toggleButton' => ['label'=>$model->fullname, 'class'=>'btn btn-link'],
+                            'toggleButton' => [
+                                'label' => $model->fullname,
+                                'class' => 'btn btn-link',
+                                'onclick' => new JsExpression('
+                                    $("#candidate-modal-' . $model->uniqueId . '").modal("show");
+                                '),
+                            ],
                             'pluginOptions' => [
                                 'trigger' => 'hover',
                             ],
