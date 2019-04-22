@@ -60,9 +60,10 @@ class CandidateSearch extends Candidate
                 'attributes' => [
                     'interview_datetime',
                     'trainee_date',
+                    'phone',
                     'fullname' => [
                         'asc' => ['employee.surname' => SORT_ASC, 'employee.name' => SORT_ASC, 'employee.patronymic' => SORT_ASC],
-                        'desc' => ['employee.surnname' => SORT_DESC, 'employee.name' => SORT_ASC, 'employee.patronymic' => SORT_ASC],
+                        'desc' => ['employee.surnname' => SORT_DESC, 'employee.name' => SORT_DESC, 'employee.patronymic' => SORT_DESC],
                     ],
                     'category' => [
                         'asc' => ['category.name' => SORT_ASC],
@@ -75,7 +76,7 @@ class CandidateSearch extends Candidate
                     ],
                     'manager' => [
                         'asc' => ['manager.surname' => SORT_ASC, 'manager.name' => SORT_ASC],
-                        'desc' => ['manager.surnname' => SORT_DESC, 'manager.name' => SORT_ASC],
+                        'desc' => ['manager.surnname' => SORT_DESC, 'manager.name' => SORT_DESC],
                     ],
                     'metro' => [
                         'asc' => ['metro.name' => SORT_ASC],

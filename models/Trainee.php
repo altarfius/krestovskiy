@@ -166,4 +166,30 @@ class TraineeQuery extends ActiveQuery
     {
         return $this->andWhere(['is_trainee' => 1]);
     }
+
+
+    public function likeFullname($query) {
+        $query = trim($query);
+
+        if (substr_count($query, ' ')) {
+            $queryExploded = explode(' ', $query);
+
+            if ($queryExploded[0]) {
+                $this->where(['like', 'surname', $queryExploded[0]]);
+            }
+            if (isset($queryExploded[1])) {
+                $this->andWhere(['like', 'name', $queryExploded[1]]);
+            }
+            if (isset($queryExploded[2])) {
+                $this->andWhere(['like', 'patronymic', $queryExploded[2]]);
+            }
+        } else {
+            $this
+                ->where(['like', 'surname', $query])
+                ->orWhere(['like', 'name', $query])
+                ->orWhere(['like', 'patronymic', $query]);
+        }
+
+        return $this->isTrainee();
+    }
 }

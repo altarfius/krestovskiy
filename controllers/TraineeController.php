@@ -121,4 +121,22 @@ class TraineeController extends Controller
 
         return $photoUrlForPhysicalDeleted;
     }
+
+    public function actionFind($q) {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+
+        $trainees = Trainee::find()->likeFullname($q)->all();
+        Yii::debug(Trainee::find()->likeFullname($q));
+
+        $out = [];
+
+        foreach ($trainees as $trainee) {
+            $out[] = [
+                'id' => $trainee->id,
+                'value' => $trainee->fullname
+            ];
+        }
+
+        return $out;
+    }
 }

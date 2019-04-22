@@ -6,6 +6,7 @@ use kartik\grid\SerialColumn;
 use kartik\helpers\Html;
 use kartik\bs4dropdown\ButtonDropdown;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Url;
 
 $this->title = 'Стажёры';
 
@@ -59,18 +60,35 @@ echo Html::beginTag('div', ['class' => 'row']);
                 ],
                 [
                     'attribute' => 'fullname',
-                    'mergeHeader' => true,
                     'format' => 'raw',
                     'value' => function($model) {
                         return $this->render('modalEdit', [
                             'trainee' => $model,
                         ]);
                     },
+                    'filterType' => GridView::FILTER_TYPEAHEAD,
+                    'filterWidgetOptions' => [
+                        'options' => [
+                            'autocomplete'=> false,
+                        ],
+                        'pluginOptions' => ['highlight' => true],
+                        'dataset' => [
+                            [
+                                'datumTokenizer' => "Bloodhound.tokenizers.obj.whitespace('value')",
+                                'display' => 'value',
+                                'remote' => [
+                                    'url' => Url::to(['trainee/find']) . '&q=%QUERY',
+                                    'wildcard' => '%QUERY'
+                                ],
+                            ]
+                        ]
+                    ],
+                    'filterInputOptions' => ['placeholder' => 'Фильтровать по...'],
                 ],
                 [
                     'attribute' => 'phone',
-                    'mergeHeader' => true,
                     'width' => '130px',
+                    'filter' => Html::input('text', 'qwe'),
                 ],
                 [
                     'attribute' => 'division',

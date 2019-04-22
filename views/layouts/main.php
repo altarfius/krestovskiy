@@ -59,7 +59,7 @@ echo Html::beginTag('body');
                 ['label' => 'Персонал', 'items' => [
                     ['label' => 'Кандидаты', 'url' => ['/candidate/show']],
                     ['label' => 'Стажёры', 'url' => ['/trainee/show']],
-                    ['label' => 'Сотрудники', 'url' => ['/employee/show'], 'linkOptions' => ['class' => 'disabled']],
+                    ['label' => 'Сотрудники', 'url' => ['/employee/show']],
                     ['label' => 'Вакансии', 'url' => ['/job/show']],
                 ]],
                 ['label' => 'Рестораны', 'url' => ['/site/about'], 'linkOptions' => ['class' => 'disabled']],
