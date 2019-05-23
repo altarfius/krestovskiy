@@ -35,7 +35,8 @@ class TraineeSearch extends Trainee
                 return $value;
             }],
             ['phone', 'filter', 'filter' => function($phone) {
-                return substr_replace($phone, '', strpos($phone, '_'));
+                $position = strpos($phone, '_');
+                return $position !== false ? substr_replace($phone, '', $position) : $phone;
             }],
             [['division', 'category', 'status'], 'safe']
         ];

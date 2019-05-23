@@ -94,6 +94,10 @@ echo Html::beginTag('div', ['class' => 'row']);
                         'model' => $traineeSearch,
                         'attribute' => 'phone',
                         'mask' => '+7 (999) 999-99-99',
+                        'options' => [
+                            'class' => 'form-control',
+                            'placeholder' => 'Фильтровать по...',
+                        ],
                     ]),
                 ],
                 [

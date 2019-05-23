@@ -44,7 +44,8 @@ class CandidateSearch extends Candidate
                 return $value;
             }],
             ['phone', 'filter', 'filter' => function($phone) {
-                return substr_replace($phone, '', strpos($phone, '_'));
+                $position = strpos($phone, '_');
+                return $position !== false ? substr_replace($phone, '', $position) : $phone;
             }],
             [['nationality', 'category', 'metro', 'status', 'manager', 'interview_datetime'], 'safe'],
 //            ['interview_datetime', 'filter', 'filter' => function($value) {
