@@ -72,8 +72,6 @@ class Candidate extends AbstractModel
             return false;
         }
 
-        $this->manager_id = Yii::$app->user->id;
-
         $this->update_user_id = Yii::$app->user->id;
         $this->update_time = date(DATE_ISO8601);
 
@@ -87,6 +85,7 @@ class Candidate extends AbstractModel
         }
 
         if ($insert) {
+            $this->manager_id = Yii::$app->user->id;
             $this->create_user_id = $this->update_user_id;
             $this->create_time = $this->update_time;
         }

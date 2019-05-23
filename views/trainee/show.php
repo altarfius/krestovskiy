@@ -7,6 +7,7 @@ use kartik\helpers\Html;
 use kartik\bs4dropdown\ButtonDropdown;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
+use yii\widgets\MaskedInput;
 
 $this->title = 'Стажёры';
 
@@ -88,7 +89,12 @@ echo Html::beginTag('div', ['class' => 'row']);
                 [
                     'attribute' => 'phone',
                     'width' => '130px',
-                    'filter' => Html::input('text', 'qwe'),
+                    'vAlign' => GridView::ALIGN_MIDDLE,
+                    'filter' => MaskedInput::widget([
+                        'model' => $traineeSearch,
+                        'attribute' => 'phone',
+                        'mask' => '+7 (999) 999-99-99',
+                    ]),
                 ],
                 [
                     'attribute' => 'division',
@@ -123,7 +129,9 @@ echo Html::beginTag('div', ['class' => 'row']);
                     'content' => function($model) use ($statuses) {
                         return ButtonDropdown::widget([
                             'label' => $model->status->name,
-                            'buttonOptions' => ['class' => 'btn-success btn-sm ' . ($model->is_employee ? 'disabled' : '')],
+                            'buttonOptions' => [
+                                'class' => 'btn-'. $model->status->style .' btn-sm ' . ($model->is_employee ? 'disabled' : ''),
+                            ],
                             'dropdown' => [
                                 'items' => $model->renderDropdownItems(),
                             ],

@@ -43,6 +43,9 @@ class CandidateSearch extends Candidate
 
                 return $value;
             }],
+            ['phone', 'filter', 'filter' => function($phone) {
+                return substr_replace($phone, '', strpos($phone, '_'));
+            }],
             [['nationality', 'category', 'metro', 'status', 'manager', 'interview_datetime'], 'safe'],
 //            ['interview_datetime', 'filter', 'filter' => function($value) {
 //                return Yii::$app->formatter->asDatetime($value, 'yyyy-MM-dd HH:mm');
@@ -111,6 +114,7 @@ class CandidateSearch extends Candidate
         $query->andFilterWhere(['=', 'trainee_date', $this->trainee_date ? Yii::$app->formatter->asDate($this->trainee_date, 'yyyy-MM-dd') : $this->trainee_date]);
         $query->andFilterWhere(['=', 'interview_date', $this->interview_datetime ? Yii::$app->formatter->asDate($this->interview_datetime, 'yyyy-MM-dd') : $this->interview_datetime]);
         $query->andFilterWhere(['=', 'interview_time', $this->interview_datetime ? Yii::$app->formatter->asTime($this->interview_datetime) : $this->interview_datetime]);
+        $query->andFilterWhere(['like', 'phone', $this->phone]);
 
         return $dataProvider;
     }

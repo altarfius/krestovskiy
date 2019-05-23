@@ -31,6 +31,7 @@ Modal::begin([
     ],
     'footer' => join('', [
         Html::resetButton('Закрыть', [
+            Html::tag('div', 'Создан ' . Yii::$app->formatter->asDatetime($trainee->create_time), ['style' => 'width: 100%;']),
             'type' => 'button',
             'form' => $formId,
             'class' => 'btn btn-secondary',

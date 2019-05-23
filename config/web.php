@@ -52,6 +52,7 @@ $config = [
         ],
         'formatter' => [
             'dateFormat' => 'dd.MM.yyyy',
+            'datetimeFormat' => 'd MMMM yyyyг. в HH:mm',
             'timeZone' => 'UTC',
             'decimalSeparator' => ',',
             'thousandSeparator' => ' ',

@@ -24,6 +24,7 @@ Modal::begin([
     ],
     'toggleButton' => false,
     'footer' => join('', [
+        Html::tag('div', 'Создан ' . Yii::$app->formatter->asDatetime($candidate->create_time), ['style' => 'width: 100%;']),
         Html::resetButton('Закрыть', [
             'type' => 'button',
             'form' => $formId,

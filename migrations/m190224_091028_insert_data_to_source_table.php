@@ -24,6 +24,7 @@ class m190224_091028_insert_data_to_source_table extends Migration
             ['Vk.com'],
             ['Instagram'],
             ['Наш сайт'],
+            ['rabota.ru'],
         ]);
     }
 

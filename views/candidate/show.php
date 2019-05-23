@@ -13,6 +13,7 @@ use kartik\popover\PopoverX;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 use yii\web\JsExpression;
+use yii\widgets\MaskedInput;
 
 $this->title = 'Кандидаты';
 
@@ -139,7 +140,7 @@ echo Html::beginTag('div', ['class' => 'row']);
                             ],
                         ]);
                     },
-                    'width' => '265px',
+                    'width' => '225px',
                     'vAlign' => GridView::ALIGN_MIDDLE,
                     'filterType' => GridView::FILTER_TYPEAHEAD,
                     'filterWidgetOptions' => [
@@ -171,9 +172,13 @@ echo Html::beginTag('div', ['class' => 'row']);
 //                ],
                 [
                     'attribute' => 'phone',
-                    'width' => '90px',
+                    'width' => '130px',
                     'vAlign' => GridView::ALIGN_MIDDLE,
-//                    'filterType' => GridView::FILTE
+                    'filter' => MaskedInput::widget([
+                        'model' => $candidateSearch,
+                        'attribute' => 'phone',
+                        'mask' => '+7 (999) 999-99-99',
+                    ]),
                 ],
 //                [
 //                    'attribute' => 'nationality',

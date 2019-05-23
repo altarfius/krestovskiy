@@ -34,6 +34,9 @@ class TraineeSearch extends Trainee
 
                 return $value;
             }],
+            ['phone', 'filter', 'filter' => function($phone) {
+                return substr_replace($phone, '', strpos($phone, '_'));
+            }],
             [['division', 'category', 'status'], 'safe']
         ];
     }
@@ -85,6 +88,7 @@ class TraineeSearch extends Trainee
         $query->andFilterWhere(['like', 'employee.name', $this->name, false, false]);
         $query->andFilterWhere(['like', 'employee.patronymic', $this->patronymic, false, false]);
         $query->andFilterWhere(['trainee_date' => $this->trainee_date ? Yii::$app->formatter->asDate($this->trainee_date, 'yyyy-MM-dd') : $this->trainee_date]);
+        $query->andFilterWhere(['like', 'phone', $this->phone]);
 
         return $dataProvider;
     }

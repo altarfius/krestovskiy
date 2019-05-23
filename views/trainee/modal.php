@@ -24,6 +24,7 @@ Modal::begin([
         'tabindex' => false,
     ],
     'footer' => join('', [
+        Html::tag('div', 'Создан ' . Yii::$app->formatter->asDatetime($trainee->create_time), ['style' => 'width: 100%;']),
         Html::resetButton('Закрыть', [
             'type' => 'button',
             'form' => $formId,
