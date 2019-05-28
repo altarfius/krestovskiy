@@ -8,6 +8,7 @@ use Yii;
 class Candidate extends AbstractModel
 {
     const SCENARIO_NEW = 'scenario_new';
+    const STAGE_ID = 1;
 
     public $type = 1;
     public $interview_datetime;
@@ -221,7 +222,7 @@ class Candidate extends AbstractModel
     }
 
     public function readyNextLevel() {
-        return $this->status->stage == Trainee::STAGE_ID;
+        return $this->status->next_stage != 0;
     }
 
     public function convertToTrainee() {
@@ -266,7 +267,11 @@ class Candidate extends AbstractModel
                 'label' => $status->name,
                 'url' => ['candidate/updatestatus', 'id' => $this->id, 'statusId' => $status->id],
             ];
-        }, Status::find()->byStage($this->status->next_stage)->all());
+        }, Status::findActive()
+                ->byStage(self::STAGE_ID)
+                ->byParent($this->status_id)
+//                ->withoutIds([$this->status_id, $this->status->parent])
+                ->all());
     }
 }
 

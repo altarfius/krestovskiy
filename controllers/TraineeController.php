@@ -46,7 +46,7 @@ class TraineeController extends Controller
             'traineeSearch' => $traineeSearch,
             'divisions' => Division::find()->all(),
             'categories' => Category::find()->all(),
-            'statuses' => Status::find()->byStage(Trainee::STAGE_ID)->all(),
+            'statuses' => Status::findActive()->byStage(Trainee::STAGE_ID)->all(),
         ]);
     }
 
@@ -77,7 +77,7 @@ class TraineeController extends Controller
             'newTrainee' => $trainee,
             'divisions' => Division::find()->all(),
             'categories' => Category::find()->all(),
-            'statuses' => Status::find()->byStage(Trainee::STAGE_ID)->all(),
+            'statuses' => Status::findActive()->byStage(Trainee::STAGE_ID)->all(),
         ]);
     }
 
@@ -87,7 +87,16 @@ class TraineeController extends Controller
 
         $trainee->setStatus($statusId);
 
+        if ($trainee->readyNextLevel()) {
+            $trainee->convertToEmployee();
+        }
+
         if ($trainee->update(false)) {
+            if ($trainee->is_employee) {
+                return $this->redirect(['employee/show']);
+            } else {
+                Yii::$app->session->setFlash('success', $trainee->fullname . ' сохранён в стажеры');
+            }
             return $this->redirect(Yii::$app->request->referrer);
         } else {
             Yii::debug($trainee->getErrorSummary(true), __METHOD__);

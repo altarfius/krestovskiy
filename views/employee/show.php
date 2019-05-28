@@ -148,9 +148,9 @@ echo GridView::widget([
                     'buttonOptions' => [
                         'class' => 'btn-'. $model->status->style .' btn-sm ',
                     ],
-//                    'dropdown' => [
-//                        'items' => $model->renderDropdownItems(),
-//                    ],
+                    'dropdown' => [
+                        'items' => $model->renderDropdownItems(),
+                    ],
                 ]);
             },
             'filterType' => GridView::FILTER_SELECT2,

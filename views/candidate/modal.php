@@ -1,5 +1,6 @@
 <?php
 
+use app\models\Candidate;
 use app\models\Division;
 use app\models\DivisionType;
 use app\models\Nationality;
@@ -46,7 +47,7 @@ Modal::begin([
         'metros' => Metro::find()->all(),
         'divisions' => Division::find()->byType(Division::RESTAURANT)->all(),
         'nationalities' => Nationality::find()->all(),
-        'statuses' => Status::find()->byStage()->all(),
+        'statuses' => Status::findActive()->byStage(Candidate::STAGE_ID)->byParent($candidate->status_id)->all(),
         'divisionTypes' => DivisionType::find()->all(),
     ]);
 Modal::end();

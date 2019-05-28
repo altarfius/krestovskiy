@@ -61,7 +61,8 @@ class CandidateController extends Controller
             'nationalities' => Nationality::find()->all(),
             'categories' => Category::find()->all(),
             'metros' => Metro::find()->all(),
-            'statuses' => Status::find()->byStage()->orWhere(['id' => 7])->all(), //TODO: Резервы не все отображаются при фильтре
+//            'statuses' => Status::find()->byStage()->orWhere(['id' => 7])->all(), //TODO: Резервы не все отображаются при фильтре
+            'statuses' => Status::findActive()->byStage(Candidate::STAGE_ID)->all(),
             'managers' => User::find()->all(),
         ]);
     }
@@ -121,7 +122,7 @@ class CandidateController extends Controller
 
         if ($candidate->save()) {
             if ($candidate->is_trainee) {
-                return $this->redirect(['trainee/edit', 'id' => $candidate->id]);
+                return $this->redirect(['trainee/show']);
             } else {
                 Yii::$app->session->setFlash('success', $candidate->fullname . ' сохранён в кандидаты');
             }

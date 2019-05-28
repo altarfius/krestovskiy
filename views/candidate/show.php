@@ -149,11 +149,6 @@ echo Html::beginTag('div', ['class' => 'row']);
                             [
                                 'datumTokenizer' => "Bloodhound.tokenizers.obj.whitespace('value')",
                                 'display' => 'value',
-//                                'templates' => [
-//                                    'notFound' => '<div class = "text-danger" style = "padding: 0 8px"> Невозможно найти репозитории для выбранного запроса. </ div>' ,
-//                                    'offertion' => new JsExpression ( 'Handlebars.compile ("<div style=\"color: red;\">{{value}}</div>")' ),
-//                                ],
-//                                'prefetch' => $baseUrl . '/samples/countries.json',
                                 'remote' => [
                                     'url' => Url::to(['candidate/find']) . '&q=%QUERY',
                                     'wildcard' => '%QUERY'
@@ -165,11 +160,6 @@ echo Html::beginTag('div', ['class' => 'row']);
                     'pageSummary' => function ($summary, $data, $widget) { return 'Count is ' . $summary; },
                     'pageSummaryFunc' => GridView::F_COUNT,
                 ],
-//                [
-//                    'attribute' => 'age',
-//                    'width' => '45px',
-//                    'vAlign' => GridView::ALIGN_MIDDLE,
-//                ],
                 [
                     'attribute' => 'phone',
                     'width' => '130px',
@@ -184,20 +174,6 @@ echo Html::beginTag('div', ['class' => 'row']);
                         ],
                     ]),
                 ],
-//                [
-//                    'attribute' => 'nationality',
-//                    'value' => function($model) {
-//                        return $model->nationality->name;
-//                    },
-//                    'width' => '105px',
-//                    'vAlign' => GridView::ALIGN_MIDDLE,
-//                    'filterType' => GridView::FILTER_SELECT2,
-//                    'filter' => ArrayHelper::map($nationalities, 'id', 'name'),
-//                    'filterWidgetOptions' => [
-//                        'pluginOptions' => ['allowClear' => true],
-//                    ],
-//                    'filterInputOptions' => ['placeholder' => 'Фильтровать по...'],
-//                ],
                 [
                     'attribute' => 'category',
                     'value' => function($model) {
@@ -212,21 +188,6 @@ echo Html::beginTag('div', ['class' => 'row']);
                     ],
                     'filterInputOptions' => ['placeholder' => 'Фильтровать по...'],
                 ],
-//                [
-//                    'attribute' => 'metro',
-//                    'format' => 'raw',
-//                    'width' => '160px',
-//                    'value' => function($model) {
-//                        return $model->metro->renderNameWithImg();
-//                    },
-//                    'vAlign' => GridView::ALIGN_MIDDLE,
-//                    'filterType' => GridView::FILTER_SELECT2,
-//                    'filter' => ArrayHelper::map($metros, 'id', 'name'),
-//                    'filterWidgetOptions' => [
-//                        'pluginOptions' => ['allowClear' => true],
-//                    ],
-//                    'filterInputOptions' => ['placeholder' => 'Фильтровать по...'],
-//                ],
                 [
                     'attribute' => 'status',
                     'format' => 'raw',
@@ -250,18 +211,6 @@ echo Html::beginTag('div', ['class' => 'row']);
                     ],
                     'filterInputOptions' => ['placeholder' => 'Фильтровать по...'],
                 ],
-//                [
-//                    'attribute' => 'interview_datetime',
-//                    'value' => function($model) {
-//                        $format = 'dd MMMM';
-//                        if ($model->interview_time != null) {
-//                            $format .= ' в HH:mm';
-//                        }
-//                        return Yii::$app->formatter->asDatetime($model->interview_datetime, $format);
-//                    },
-//                    'width' => '100px',
-//                    'vAlign' => GridView::ALIGN_MIDDLE,
-//                ],
                 [
                     'class' => EditableColumn::class,
                     'attribute' => 'interview_datetime',
@@ -270,21 +219,20 @@ echo Html::beginTag('div', ['class' => 'row']);
                     'vAlign' => GridView::ALIGN_MIDDLE,
                     'filterType' => GridView::FILTER_DATETIME,
                     'filterWidgetOptions' => [
+//                        'pluginOptions' => [
+//                            'autoclose' => true,
+//                            'todayHighlight' => true,
+//                        ],
+                        'type' => DateTimePicker::TYPE_COMPONENT_PREPEND,
                         'pluginOptions' => [
                             'autoclose' => true,
+                            'format' => 'dd.mm.yyyy HH:ii',
+                            'minuteStep' => 30,
                             'todayHighlight' => true,
                         ],
-                            'type' => DateTimePicker::TYPE_COMPONENT_PREPEND,
-                            'pluginOptions' => [
-                                'autoclose' => true,
-                                'format' => 'dd.mm.yyyy HH:ii',
-                                'minuteStep' => 30,
-                                'todayHighlight' => true,
-                            ],
-                            'options' => [
-//                                'id' => 'candidate-interview-datetime-' . $model->uniqueId,
-                                'autocomplete' => 'off',
-                            ],
+                        'options' => [
+                            'autocomplete' => 'off',
+                        ],
                     ],
                     'editableOptions' => function ($model) {
                         return [
@@ -295,7 +243,6 @@ echo Html::beginTag('div', ['class' => 'row']);
                             'placement' => PopoverX::ALIGN_LEFT,
                             'valueIfNull' => Html::tag('em', 'Не назначено'),
                             'showButtonLabels' => true,
-//                            'editableValueOptions' => ['disabled' => 'disabled'],
                             'submitButton' => [
                                 'icon' => false,
                                 'label' => 'Сохранить',
@@ -346,7 +293,6 @@ echo Html::beginTag('div', ['class' => 'row']);
                             'placement' => PopoverX::ALIGN_LEFT,
                             'valueIfNull' => Html::tag('em', 'Не назначено'),
                             'showButtonLabels' => true,
-//                            'editableValueOptions' => ['disabled' => 'disabled'],
                             'submitButton' => [
                                 'icon' => false,
                                 'label' => 'Сохранить',

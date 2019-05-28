@@ -14,7 +14,7 @@ use yii\web\UploadedFile;
 
 class Trainee extends Candidate
 {
-    const STAGE_ID = 3;
+    const STAGE_ID = 2;
 
     const RUSSIAN_PASSPORT = 1;
     const FOREIGN_PASSPORT = 2;
@@ -69,20 +69,6 @@ class Trainee extends Candidate
             return false;
         }
 
-        if ($this->status->next_stage < Trainee::STAGE_ID) {
-            $this->is_candidate = 1;
-            $this->is_trainee = 0;
-            $this->is_employee = 0;
-        } elseif ($this->status->next_stage < 5) {
-            $this->is_candidate = 0;
-            $this->is_trainee = 1;
-            $this->is_employee = 0;
-        } else {
-            $this->is_candidate = 0;
-            $this->is_trainee = 0;
-            $this->is_employee = 1;
-        }
-
         $this->photo = UploadedFile::getInstance($this, 'photo');
         if ($this->photo != null) {
             $extention = $this->photo->extension;
@@ -117,7 +103,7 @@ class Trainee extends Candidate
         $this->medical_date = Yii::$app->formatter->asDate($this->medical_date);
         $this->trainee_date = Yii::$app->formatter->asDate($this->trainee_date);
 
-        Yii::$app->session->setFlash('success', 'Стажёр сохранён');
+        Yii::$app->session->setFlash('success', 'Сохранёно');
     }
 
     public static function find()
@@ -156,7 +142,16 @@ class Trainee extends Candidate
                 'label' => $status->name,
                 'url' => ['trainee/updatestatus', 'id' => $this->id, 'statusId' => $status->id]
             ];
-        }, Status::find()->byStage($this->status->next_stage)->all());
+        }, Status::findActive()
+            ->byStage(self::STAGE_ID)
+            ->byParent($this->status_id)
+            ->all());
+    }
+
+    public function convertToEmployee() {
+        $this->is_candidate = 0;
+        $this->is_trainee = 0;
+        $this->is_employee = 1;
     }
 }
 

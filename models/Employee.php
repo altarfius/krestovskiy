@@ -13,10 +13,24 @@ use yii\db\ActiveQuery;
 
 class Employee extends Trainee
 {
+    const STAGE_ID = 3;
+
     public static function find()
     {
         $query = new EmployeeQuery(get_called_class());
         return $query->isEmployee();
+    }
+
+    public function renderDropdownItems() {
+        return array_map(function($status) {
+            return [
+                'label' => $status->name,
+                'url' => ['employee/updatestatus', 'id' => $this->id, 'statusId' => $status->id]
+            ];
+        }, Status::findActive()
+            ->byStage(self::STAGE_ID)
+            ->byParent($this->status_id)
+            ->all());
     }
 }
 
